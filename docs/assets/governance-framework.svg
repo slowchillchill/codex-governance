@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="790" viewBox="0 0 1280 790" role="img" aria-labelledby="title desc">
+  <title id="title">Codex Governance 治理框架</title>
+  <desc id="desc">用户显式授权后，主会话维护当前 Issue，顺序协调范围规划、实现与独立审查。正式 Review 返回主会话核验并分流，当前提交获批且满足其他合并条件后合并、清理并停止。Issue、PR、Review 与合并提交保存任务事实和证据。</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#0b1424"/><stop offset="1" stop-color="#14273c"/></linearGradient>
+    <linearGradient id="accent" x2="1"><stop stop-color="#54e1c5"/><stop offset="1" stop-color="#75a6ff"/></linearGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#39516a" opacity=".35"/></pattern>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#90abc4" stroke-width="2"/></marker>
+    <marker id="teal-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#54e1c5" stroke-width="2"/></marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+      .title { fill: #f2f7fc; font-weight: 700; }
+      .body { fill: #b7c9db; font-size: 18px; }
+      .mono { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; }
+      .line { fill: none; stroke: #90abc4; stroke-width: 2; stroke-linejoin: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1280" height="790" rx="24" fill="url(#background)"/>
+  <rect width="1280" height="790" rx="24" fill="url(#dots)"/>
+  <rect x="1" y="1" width="1278" height="788" rx="23" fill="none" stroke="#30465d"/>
+  <rect x="48" y="48" width="6" height="47" rx="3" fill="url(#accent)"/>
+  <text x="72" y="67" class="title" font-size="29">从明确需求，到可追溯交付</text>
+  <text x="72" y="99" class="body">显式授权 · 职责分离 · 独立审查 · 外部事实</text>
+  <text x="1216" y="68" text-anchor="end" fill="#6ee3ca" font-size="19" font-weight="600">Codex Governance</text>
+  <text x="1216" y="97" text-anchor="end" class="body">当前任务完成即停</text>
+
+  <rect x="64" y="162" width="220" height="110" rx="16" fill="#152338" stroke="#46566b"/>
+  <circle cx="94" cy="191" r="5" fill="#f4c77a"/>
+  <text x="84" y="224" class="title" font-size="25">人工授权</text>
+  <text x="84" y="251" class="body">显式调用 · 冲突裁决</text>
+
+  <rect x="410" y="154" width="370" height="126" rx="18" fill="#142f39" stroke="#54e1c5" stroke-width="1.5"/>
+  <text x="435" y="191" class="title mono" font-size="26">orchestrator</text>
+  <text x="435" y="226" class="body">维护当前合同 · 顺序协调角色</text>
+  <text x="435" y="255" class="body">回读真实证据 · 判断推进分支</text>
+
+  <rect x="974" y="162" width="242" height="110" rx="16" fill="#173131" stroke="#4a9c8a"/>
+  <text x="996" y="207" class="title" font-size="25">工程交付</text>
+  <text x="996" y="241" class="body">合并 · 清理 · 停止</text>
+  <path d="M294 216 H397" class="line"/>
+  <text x="345" y="197" text-anchor="middle" class="body">明确需求</text>
+  <path d="M790 216 H961" fill="none" stroke="#54e1c5" stroke-width="2" marker-end="url(#teal-arrow)"/>
+  <text x="877" y="189" text-anchor="middle" fill="#7ce8d0" font-size="18">满足合并条件</text>
+
+  <path d="M486 280 V326 H230 V361" class="line"/>
+  <text x="255" y="311" class="body">准确 Issue 与当前任务</text>
+  <path d="M1050 363 V319 H715 V290" fill="none" stroke="#c1a5f5" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#arrow)"/>
+  <text x="823" y="300" fill="#cdb9ed" font-size="18">Review 回读与分流</text>
+
+  <rect x="64" y="372" width="330" height="154" rx="16" fill="#14263b" stroke="#5e8bc4"/>
+  <text x="86" y="405" fill="#87b9fb" font-size="17" font-weight="700">01 / 只读规划</text>
+  <text x="86" y="440" class="title mono" font-size="24">scope-planner</text>
+  <text x="86" y="477" class="body">最小范围 · 非目标</text>
+  <text x="86" y="504" class="body">验收映射 · 关键反例</text>
+
+  <rect x="475" y="372" width="330" height="154" rx="16" fill="#14313a" stroke="#4ebaa5"/>
+  <text x="497" y="405" fill="#74dfc7" font-size="17" font-weight="700">02 / 实施与验证</text>
+  <text x="497" y="440" class="title mono" font-size="24">implementer</text>
+  <text x="497" y="477" class="body">唯一写入者 · 必要验证</text>
+  <text x="497" y="504" class="body">提交 · 普通推送 · PR</text>
+
+  <rect x="886" y="372" width="330" height="154" rx="16" fill="#26243e" stroke="#a28ad0"/>
+  <text x="908" y="405" fill="#cfb1ff" font-size="17" font-weight="700">03 / 独立只读审查</text>
+  <text x="908" y="440" class="title mono" font-size="24">reviewer</text>
+  <text x="908" y="477" class="body">反证检验 · 正式 Review</text>
+  <text x="908" y="504" class="body">绑定已审查的准确提交</text>
+  <path d="M405 446 H464" class="line"/>
+  <path d="M816 446 H875" class="line"/>
+  <text x="640" y="560" text-anchor="middle" class="body">三个子角色由主会话依次派生；同一时刻只推进一个角色</text>
+
+  <rect x="64" y="592" width="1152" height="136" rx="16" fill="#0e1c2c" stroke="#344c64"/>
+  <text x="88" y="622" fill="#82a9cc" font-size="17" font-weight="600">GitHub + Git / 可回读的任务事实与交付证据</text>
+  <path d="M358 647 V706 M645 647 V706 M933 647 V706" stroke="#2c435a"/>
+  <text x="88" y="667" class="title" font-size="23">Issue</text>
+  <text x="88" y="699" class="body">当前目标与批准范围</text>
+  <text x="384" y="667" class="title" font-size="23">PR</text>
+  <text x="384" y="699" class="body">实现差异与测试证据</text>
+  <text x="671" y="667" class="title" font-size="23">Review</text>
+  <text x="671" y="699" class="body">准确提交的正式结论</text>
+  <text x="959" y="667" class="title" font-size="23">合并提交</text>
+  <text x="959" y="699" class="body">最终纳入主线的结果</text>
+  <text x="640" y="761" text-anchor="middle" fill="#8faac1" font-size="17">任务状态可追溯 · 会话变化后有据可恢复 · 推理能力在授权范围内发挥</text>
+</svg>

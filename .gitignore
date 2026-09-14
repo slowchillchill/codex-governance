@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+
+# 本机配置应安装在仓库外；保留这些忽略项以免误提交本机副本。
+local.toml
+*.local.toml
+.env
+.env.*
+!.env.example

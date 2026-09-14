@@ -1,0 +1,16 @@
+# 手动复制到仓库外的本机绑定文件后填写；不要把填写后的副本提交到任何仓库。
+# 文件定位及字段语义见治理规范第四节。此文件由代理读取，不是 Codex 原生配置层。
+# 只填写非认证元数据，不填写令牌、口令或私钥；路径使用实际绝对路径，不写 ~ 或 $HOME。
+
+[paths]
+source_root = "/absolute/path/to/codex-governance"
+
+# 主会话、范围规划和独立审查共用控制账号。
+[github.controller]
+login = "YOUR_CONTROLLER_LOGIN"
+config_dir = "/absolute/path/to/gh-controller"
+
+# 实现账号负责推送和创建 PR，控制账号负责正式审查与合并。
+[github.implementer]
+login = "YOUR_IMPLEMENTER_LOGIN"
+config_dir = "/absolute/path/to/gh-implementer"
