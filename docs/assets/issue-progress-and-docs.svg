@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1030" viewBox="0 0 1280 1030" role="img" aria-labelledby="title desc">
+  <title id="title">Issue 同时承载当前进度与完整任务规格</title>
+  <desc id="desc">内容组织示意，并非真实 GitHub 页面截图。左侧展示查询接口 Issue：已完成查询实现与接口验证，当前等待独立审查，无阻塞，审查通过后合并并收尾；随后显示任务步骤、当前目标、批准范围、非目标、验收与折叠的详细技术规格。右侧展示同一规格的展开内容，包括示例接口、时间区间、字段和验收依据。长期架构、接口与数据语义保存在仓库文档中，由任务引用。</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#0b1424"/><stop offset="1" stop-color="#14273c"/></linearGradient>
+    <linearGradient id="accent" x2="1"><stop stop-color="#54e1c5"/><stop offset="1" stop-color="#75a6ff"/></linearGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#39516a" opacity=".28"/></pattern>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#54e1c5" stroke-width="2"/></marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif; }
+      .title { fill: #f2f7fc; font-weight: 700; }
+      .body { fill: #bdcddd; font-size: 20px; }
+      .muted { fill: #95aec5; font-size: 18px; }
+      .mono { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; }
+    </style>
+  </defs>
+  <rect width="1280" height="1030" rx="24" fill="url(#background)"/>
+  <rect width="1280" height="1030" rx="24" fill="url(#dots)"/>
+  <rect x="1" y="1" width="1278" height="1028" rx="23" fill="none" stroke="#30465d"/>
+  <rect x="48" y="43" width="6" height="49" rx="3" fill="url(#accent)"/>
+  <text x="72" y="66" class="title" font-size="30">一个任务入口，兼顾进度与技术文档</text>
+  <text x="72" y="100" class="body">先掌握当前状态，再阅读完整要求。</text>
+  <rect x="1120" y="43" width="112" height="36" rx="18" fill="#20334b" stroke="#45617e"/>
+  <text x="1176" y="68" text-anchor="middle" fill="#c2d8f0" font-size="18">页面示意</text>
+
+  <g data-panel="issue">
+    <rect x="48" y="140" width="662" height="796" rx="18" fill="#101f31" stroke="#45617e"/>
+    <path d="M49 221 H709" stroke="#30465d"/>
+    <circle cx="81" cy="180" r="9" fill="none" stroke="#54e1c5" stroke-width="2"/>
+    <circle cx="81" cy="180" r="3" fill="#54e1c5"/>
+    <text x="104" y="189" class="title" font-size="25">Issue · 提供查询接口</text>
+    <rect x="574" y="163" width="108" height="34" rx="17" fill="#453b24"/>
+    <text x="628" y="187" text-anchor="middle" fill="#f0d18a" font-size="18">等待审查</text>
+
+    <text x="76" y="261" class="title" font-size="22">当前进度</text>
+    <text x="76" y="292" fill="#95aec5" font-size="16">示例核对时间：2026-09-24 10:00 UTC</text>
+    <text x="76" y="329" class="body">已完成：查询实现与接口验证</text>
+    <text x="76" y="360" fill="#f0d18a" font-size="20">当前：等待独立审查</text>
+    <text x="76" y="391" class="body">阻塞：无</text>
+    <text x="76" y="422" class="body">下一步：审查通过后合并并收尾</text>
+    <path d="M76 443 H682" stroke="#2a4157"/>
+
+    <text x="76" y="479" class="title" font-size="22">任务与步骤</text>
+    <rect x="78" y="500" width="17" height="17" rx="4" fill="#25574b" stroke="#54e1c5"/>
+    <path d="M82 508 L86 512 L92 504" fill="none" stroke="#b0f4df" stroke-width="2"/>
+    <text x="107" y="516" class="body">查询实现与验证</text>
+    <rect x="78" y="531" width="17" height="17" rx="4" fill="none" stroke="#8099b1"/>
+    <text x="107" y="547" class="body">独立审查、合并与收尾</text>
+    <path d="M76 567 H682" stroke="#2a4157"/>
+
+    <text x="76" y="603" class="title" font-size="22">当前合同与验收</text>
+    <text x="76" y="638" class="body">目标：提供时间范围查询接口</text>
+    <text x="76" y="669" class="body">批准范围：当前查询任务；非目标：导出与管理界面</text>
+    <text x="76" y="700" class="body">验收：接口符合约定，并完成审查与收尾</text>
+
+    <rect x="76" y="735" width="606" height="64" rx="10" fill="#153638" stroke="#54e1c5"/>
+    <path d="M98 757 L108 767 L98 777 Z" fill="#85e9d2"/>
+    <text x="126" y="775" class="title" font-size="22">详细技术规格</text>
+    <text x="657" y="774" text-anchor="end" fill="#96d9cd" font-size="18">默认收起</text>
+
+    <text x="76" y="851" class="title" font-size="21">相关入口</text>
+    <text x="76" y="886" fill="#91baff" font-size="20">架构文档 · 接口文档 · 实现 PR · Review</text>
+    <text x="76" y="916" class="muted">更新现有进度与有效要求，保留证据入口。</text>
+  </g>
+
+  <path d="M710 767 H763 V294 H810" fill="none" stroke="#54e1c5" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"/>
+  <rect x="723" y="482" width="80" height="70" rx="8" fill="#0e1c2c"/>
+  <text x="763" y="508" text-anchor="middle" fill="#85e9d2" font-size="19">按需</text>
+  <text x="763" y="535" text-anchor="middle" fill="#85e9d2" font-size="19">展开</text>
+
+  <g data-panel="specification">
+    <rect x="820" y="244" width="412" height="564" rx="18" fill="#112c33" stroke="#54e1c5" stroke-width="1.5"/>
+    <text x="848" y="291" class="title" font-size="24">技术规格 · 展开示意</text>
+    <path d="M848 315 H1204" stroke="#35585c"/>
+    <text x="848" y="353" fill="#85e9d2" font-size="21" font-weight="700">接口约定</text>
+    <text x="848" y="387" class="mono" fill="#e1eef3" font-size="21">GET /records</text>
+    <text x="848" y="420" class="body">时间范围采用半开区间</text>
+    <text x="848" y="451" class="mono" fill="#bdcddd" font-size="19">start ≤ timestamp &lt; end</text>
+    <path d="M848 474 H1204" stroke="#35585c"/>
+
+    <text x="848" y="512" fill="#85e9d2" font-size="21" font-weight="700">字段说明</text>
+    <text x="848" y="546" class="mono" fill="#e1eef3" font-size="21">start / end</text>
+    <text x="848" y="578" class="body">沿用既有时间格式与单位</text>
+    <path d="M848 603 H1204" stroke="#35585c"/>
+
+    <text x="848" y="641" fill="#85e9d2" font-size="21" font-weight="700">验收依据</text>
+    <text x="848" y="675" class="body">区间边界、空结果与返回字段</text>
+    <text x="848" y="707" class="body">对照当前合同与验证证据核验</text>
+    <text x="848" y="770" fill="#96d9cd" font-size="18">完整内容用于开发、交接和审查</text>
+  </g>
+
+  <g data-panel="versioned-documents">
+    <rect x="820" y="838" width="412" height="98" rx="16" fill="#25243d" stroke="#a28ad0"/>
+    <text x="848" y="875" class="title" font-size="22">长期文档由任务引用</text>
+    <text x="848" y="910" fill="#c9b7e7" font-size="19">架构 · 接口 · 数据语义随代码维护</text>
+  </g>
+  <text x="640" y="988" text-anchor="middle" class="body">进度与合同直接可读 · 长篇规格按需展开 · 文档与代码保持关联</text>
+</svg>

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="850" viewBox="0 0 1280 850" role="img" aria-labelledby="title desc">
+  <title id="title">在 GitHub 中组织大型项目</title>
+  <desc id="desc">数据平台组织关系示意。GitHub Project 的项目总览、执行看板与模块视图展示同一组任务。父 Issue 保存首个可用版本的整体目标、已批准子任务与组合验收，包含数据接入、查询接口、管理界面三个子 Issue。各任务引用仓库技术文档，关联 PR、Review 和提交。普通任务可以直接进入看板，父交付通过组合验收后关闭。示例状态并非真实项目进度。</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#0b1424"/><stop offset="1" stop-color="#14273c"/></linearGradient>
+    <linearGradient id="accent" x2="1"><stop stop-color="#54e1c5"/><stop offset="1" stop-color="#75a6ff"/></linearGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#39516a" opacity=".28"/></pattern>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#90abc4" stroke-width="2"/></marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif; }
+      .title { fill: #f2f7fc; font-weight: 700; }
+      .body { fill: #bdcddd; font-size: 20px; }
+      .muted { fill: #95aec5; font-size: 18px; }
+      .line { fill: none; stroke: #90abc4; stroke-width: 2; stroke-linejoin: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1280" height="850" rx="24" fill="url(#background)"/>
+  <rect width="1280" height="850" rx="24" fill="url(#dots)"/>
+  <rect x="1" y="1" width="1278" height="848" rx="23" fill="none" stroke="#30465d"/>
+  <rect x="48" y="43" width="6" height="49" rx="3" fill="url(#accent)"/>
+  <text x="72" y="66" class="title" font-size="30">一个 GitHub 项目，连接完整开发过程</text>
+  <text x="72" y="100" class="body">规划与进度 · 任务规格 · 长期文档 · 代码证据</text>
+  <rect x="1094" y="43" width="138" height="36" rx="18" fill="#20334b" stroke="#45617e"/>
+  <text x="1163" y="68" text-anchor="middle" fill="#c2d8f0" font-size="18">组织关系示意</text>
+
+  <g data-node="project">
+    <rect x="310" y="136" width="660" height="140" rx="18" fill="#142940" stroke="#75a6ff" stroke-width="1.5"/>
+    <text x="640" y="179" text-anchor="middle" class="title" font-size="26">GitHub Project · 数据平台</text>
+    <rect x="334" y="204" width="192" height="46" rx="10" fill="#203c5b"/>
+    <rect x="544" y="204" width="192" height="46" rx="10" fill="#203c5b"/>
+    <rect x="754" y="204" width="192" height="46" rx="10" fill="#203c5b"/>
+    <text x="430" y="234" text-anchor="middle" fill="#dbeaff" font-size="21">项目总览</text>
+    <text x="640" y="234" text-anchor="middle" fill="#dbeaff" font-size="21">执行看板</text>
+    <text x="850" y="234" text-anchor="middle" fill="#dbeaff" font-size="21">模块视图</text>
+  </g>
+  <path d="M640 276 V340" class="line"/>
+  <text x="670" y="307" class="body">展示同一组交付与任务</text>
+  <text x="670" y="339" class="muted">按状态、负责人或模块标签查看</text>
+
+  <g data-node="delivery">
+    <rect x="420" y="350" width="440" height="134" rx="18" fill="#143139" stroke="#54e1c5" stroke-width="1.5"/>
+    <text x="640" y="390" text-anchor="middle" class="title" font-size="26">父 Issue · 首个可用版本</text>
+    <text x="640" y="426" text-anchor="middle" class="body">整体目标 · 已批准子任务 · 组合验收</text>
+    <text x="640" y="459" text-anchor="middle" fill="#85dccb" font-size="19">汇总子项结果与依赖，整体尚待验收</text>
+  </g>
+  <g data-node="documents">
+    <rect x="48" y="358" width="265" height="123" rx="16" fill="#25243d" stroke="#a28ad0"/>
+    <text x="72" y="396" class="title" font-size="24">仓库技术文档</text>
+    <text x="72" y="430" class="body">架构 · 接口 · 数据语义</text>
+    <text x="72" y="459" fill="#c9b7e7" font-size="18">随代码版本维护</text>
+  </g>
+  <path d="M420 418 H324" class="line"/>
+  <text x="366" y="400" text-anchor="middle" class="body">引用</text>
+  <g data-node="evidence">
+    <rect x="967" y="358" width="265" height="123" rx="16" fill="#322d25" stroke="#b49b6b"/>
+    <text x="990" y="396" class="title" font-size="23">PR · Review · 提交</text>
+    <text x="990" y="430" class="body">实现 · 验证 · 审查</text>
+    <text x="990" y="459" fill="#dfc58f" font-size="18">交付结果可以追溯</text>
+  </g>
+  <path d="M860 418 H957" class="line"/>
+  <text x="911" y="400" text-anchor="middle" class="body">关联</text>
+
+  <path d="M640 484 V548 M240 548 H1040" fill="none" stroke="#90abc4" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M240 548 V579" class="line"/>
+  <path d="M640 548 V579" class="line"/>
+  <path d="M1040 548 V579" class="line"/>
+  <text x="670" y="531" class="body">按实际交付拆分</text>
+
+  <g data-node="ingest">
+    <rect x="64" y="590" width="352" height="128" rx="16" fill="#142b32" stroke="#4fa99b"/>
+    <text x="88" y="630" class="title" font-size="24">子 Issue · 数据接入</text>
+    <rect x="88" y="653" width="100" height="36" rx="18" fill="#1e493f"/>
+    <text x="138" y="678" text-anchor="middle" fill="#95efd5" font-size="19">已交付</text>
+    <text x="207" y="678" class="muted">结果与证据可查</text>
+  </g>
+  <g data-node="query">
+    <rect x="464" y="590" width="352" height="128" rx="16" fill="#142b32" stroke="#4fa99b"/>
+    <text x="488" y="630" class="title" font-size="24">子 Issue · 查询接口</text>
+    <rect x="488" y="653" width="112" height="36" rx="18" fill="#453b24"/>
+    <text x="544" y="678" text-anchor="middle" fill="#f0d18a" font-size="19">等待审查</text>
+    <text x="618" y="678" class="muted">实现已提交</text>
+  </g>
+  <g data-node="console">
+    <rect x="864" y="590" width="352" height="128" rx="16" fill="#142b32" stroke="#4fa99b"/>
+    <text x="888" y="630" class="title" font-size="24">子 Issue · 管理界面</text>
+    <rect x="888" y="653" width="80" height="36" rx="18" fill="#2b3b50"/>
+    <text x="928" y="678" text-anchor="middle" fill="#c1d0e1" font-size="19">待办</text>
+    <text x="988" y="678" class="muted">尚未开始实施</text>
+  </g>
+  <text x="640" y="754" text-anchor="middle" class="body">各任务分别引用适用技术文档，并关联自己的实现与审查证据。</text>
+  <path d="M64 777 H1216" stroke="#30465d"/>
+  <text x="64" y="815" class="muted">普通任务可直接进入看板 · 模块用标签分类</text>
+  <text x="1216" y="815" text-anchor="end" fill="#a0d8ce" font-size="18">父交付通过组合验收后关闭</text>
+</svg>
