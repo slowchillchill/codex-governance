@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="790" viewBox="0 0 1280 790" role="img" aria-labelledby="title desc">
   <title id="title">Codex Governance 治理框架</title>
-  <desc id="desc">用户显式授权后，主会话维护当前 Issue，顺序协调范围规划、实现与独立审查。正式 Review 返回主会话核验并分流，当前提交获批且满足其他合并条件后合并、清理并停止。Issue、PR、Review 与合并提交保存任务事实和证据。</desc>
+  <desc id="desc">Project 管理总体规划与展示，Issue 保存任务合同。用户签发普通任务或父交付后，主会话只推进已批准范围，顺序协调规划、实现与独立审查；父交付通过组合验收后结束。PR、Review 与 Git 保存实现及审查证据。</desc>
   <defs>
     <linearGradient id="background" x2="1" y2="1"><stop stop-color="#0b1424"/><stop offset="1" stop-color="#14273c"/></linearGradient>
     <linearGradient id="accent" x2="1"><stop stop-color="#54e1c5"/><stop offset="1" stop-color="#75a6ff"/></linearGradient>
@@ -22,7 +22,7 @@
   <text x="72" y="67" class="title" font-size="29">从明确需求，到可追溯交付</text>
   <text x="72" y="99" class="body">显式授权 · 职责分离 · 独立审查 · 外部事实</text>
   <text x="1216" y="68" text-anchor="end" fill="#6ee3ca" font-size="19" font-weight="600">Codex Governance</text>
-  <text x="1216" y="97" text-anchor="end" class="body">当前任务完成即停</text>
+  <text x="1216" y="97" text-anchor="end" class="body">签发的交付完成即停</text>
 
   <rect x="64" y="162" width="220" height="110" rx="16" fill="#152338" stroke="#46566b"/>
   <circle cx="94" cy="191" r="5" fill="#f4c77a"/>
@@ -31,19 +31,19 @@
 
   <rect x="410" y="154" width="370" height="126" rx="18" fill="#142f39" stroke="#54e1c5" stroke-width="1.5"/>
   <text x="435" y="191" class="title mono" font-size="26">orchestrator</text>
-  <text x="435" y="226" class="body">维护当前合同 · 顺序协调角色</text>
-  <text x="435" y="255" class="body">回读真实证据 · 判断推进分支</text>
+  <text x="435" y="226" class="body">交付合同 · 已批准任务分配</text>
+  <text x="435" y="255" class="body">回读证据 · 维护展示状态</text>
 
   <rect x="974" y="162" width="242" height="110" rx="16" fill="#173131" stroke="#4a9c8a"/>
   <text x="996" y="207" class="title" font-size="25">工程交付</text>
-  <text x="996" y="241" class="body">合并 · 清理 · 停止</text>
+  <text x="996" y="241" class="body">验收 · 清理 · 停止</text>
   <path d="M294 216 H397" class="line"/>
   <text x="345" y="197" text-anchor="middle" class="body">明确需求</text>
   <path d="M790 216 H961" fill="none" stroke="#54e1c5" stroke-width="2" marker-end="url(#teal-arrow)"/>
-  <text x="877" y="189" text-anchor="middle" fill="#7ce8d0" font-size="18">满足合并条件</text>
+  <text x="877" y="189" text-anchor="middle" fill="#7ce8d0" font-size="18">满足交付条件</text>
 
   <path d="M486 280 V326 H230 V361" class="line"/>
-  <text x="255" y="311" class="body">准确 Issue 与当前任务</text>
+  <text x="255" y="311" class="body">交付 Issue 与执行 Issue</text>
   <path d="M1050 363 V319 H715 V290" fill="none" stroke="#c1a5f5" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#arrow)"/>
   <text x="823" y="300" fill="#cdb9ed" font-size="18">Review 回读与分流</text>
 
@@ -63,21 +63,23 @@
   <text x="908" y="405" fill="#cfb1ff" font-size="17" font-weight="700">03 / 独立只读审查</text>
   <text x="908" y="440" class="title mono" font-size="24">reviewer</text>
   <text x="908" y="477" class="body">反证检验 · 正式 Review</text>
-  <text x="908" y="504" class="body">绑定已审查的准确提交</text>
+  <text x="908" y="504" class="body">准确提交 · 组合结果验收</text>
   <path d="M405 446 H464" class="line"/>
   <path d="M816 446 H875" class="line"/>
-  <text x="640" y="560" text-anchor="middle" class="body">三个子角色由主会话依次派生；同一时刻只推进一个角色</text>
+  <text x="640" y="560" text-anchor="middle" class="body">主会话依次派生角色；父交付内只推进已批准子任务</text>
 
   <rect x="64" y="592" width="1152" height="136" rx="16" fill="#0e1c2c" stroke="#344c64"/>
-  <text x="88" y="622" fill="#82a9cc" font-size="17" font-weight="600">GitHub + Git / 可回读的任务事实与交付证据</text>
-  <path d="M358 647 V706 M645 647 V706 M933 647 V706" stroke="#2c435a"/>
-  <text x="88" y="667" class="title" font-size="23">Issue</text>
-  <text x="88" y="699" class="body">当前目标与批准范围</text>
-  <text x="384" y="667" class="title" font-size="23">PR</text>
-  <text x="384" y="699" class="body">实现差异与测试证据</text>
-  <text x="671" y="667" class="title" font-size="23">Review</text>
-  <text x="671" y="699" class="body">准确提交的正式结论</text>
-  <text x="959" y="667" class="title" font-size="23">合并提交</text>
-  <text x="959" y="699" class="body">最终纳入主线的结果</text>
-  <text x="640" y="761" text-anchor="middle" fill="#8faac1" font-size="17">任务状态可追溯 · 会话变化后有据可恢复 · 推理能力在授权范围内发挥</text>
+  <text x="88" y="622" fill="#82a9cc" font-size="17" font-weight="600">Project / 规划与展示　·　Issue + PR + Review + Git / 合同与证据</text>
+  <path d="M294 647 V706 M524 647 V706 M754 647 V706 M984 647 V706" stroke="#2c435a"/>
+  <text x="88" y="667" class="title" font-size="23">Project</text>
+  <text x="88" y="699" class="body">项目概述 · 管理视图</text>
+  <text x="316" y="667" class="title" font-size="23">Issue</text>
+  <text x="316" y="699" class="body">任务合同 · 按需父子</text>
+  <text x="546" y="667" class="title" font-size="23">PR</text>
+  <text x="546" y="699" class="body">实现差异 · 验证证据</text>
+  <text x="776" y="667" class="title" font-size="23">Review</text>
+  <text x="776" y="699" class="body">准确提交的正式结论</text>
+  <text x="1006" y="667" class="title" font-size="23">Git</text>
+  <text x="1006" y="699" class="body">工作树 · 合并结果</text>
+  <text x="640" y="761" text-anchor="middle" fill="#8faac1" font-size="17">父交付需独立组合验收 · Project 展示不构成授权 · 未配置看板仍可执行</text>
 </svg>

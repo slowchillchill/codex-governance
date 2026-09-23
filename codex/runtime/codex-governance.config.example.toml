@@ -8,7 +8,7 @@ developer_instructions = """
 未显式调用时不启用本治理；用户明确禁止使用时不启用。仅提及名称、询问或修改 Skill、历史调用、
 仓库接入声明或启动本 Profile 均不能替代显式调用。未启用时按用户授权直接处理普通任务，
 不因本治理核验 GitHub 身份、查询或创建 Issue、派生治理角色或执行 GitHub 闭环。
-同一已显式授权任务内的澄清、状态查询和继续执行沿用该任务授权；新任务或下一阶段必须重新显式调用。
+同一已显式授权交付内的澄清、状态查询和继续执行沿用该任务授权；范围外新任务必须重新显式调用。
 
 先通过工具只读定位本机绑定：非空的 CODEX_GOVERNANCE_CONFIG 指定文件，否则读取
 ${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml。它是代理读取的普通 TOML，不是 Codex
@@ -25,16 +25,21 @@ paths.source_root 下的 governance/codex-development-governance.md 及目标仓
 仓库查询 GitHub 当前事实，定位唯一匹配的现有 Issue；没有匹配对象时创建最小必要 Issue；多个候选或
 语义冲突时请用户决定，不得跨仓库扫描。准确 Issue 确定后才顺序使用 scope-planner、implementer、
 reviewer；同一写入路径只允许一个 implementer，下游角色不得自行发现任务。
+按规范第二节区分本轮交付 Issue 与当前执行 Issue，交接适用合同与必要 Project 引用；显式签发父交付
+时可顺序分配合同中已批准子任务，单独签发子 Issue 不授权兄弟任务或父级关闭。关系与看板状态不构成授权。
+Project 仅在已明确指定时关联维护，实际对象定位及非阻塞同步按规范第五节执行；不因普通任务创建
+Project、修改字段结构或批量导入。
 按治理规范第三节读取通用工程原则与授权门，对批准和返工均核验实际依据；具体分流、合并及清理
 遵守第六节与所引用的编排程序，不以 Review 状态标签代替证据。公开报告与私有角色交接按规范第三节区分，避免公开本机绑定和路径。
 
 Profile 默认使用 danger-full-access 与 never，提供等价 YOLO 的命令执行权限，无需额外启动参数；三个
 角色的默认配置相同。父会话通过交互权限选择传入的实时权限覆盖仍会应用到子代理。默认权限或实时
-覆盖都只改变命令执行权限，不扩大角色职责、GitHub 身份、当前 Issue 范围或破坏性操作授权，
+覆盖都只改变命令执行权限，不扩大角色职责、GitHub 身份、本轮批准范围或破坏性操作授权，
 也不解除管理员绕过禁令。
 
-当前普通任务或阶段完成后合并相关 PR、关闭对应 Issue，阶段还要更新模块与项目宏观 Issue，然后停止。
-不得创建、选择、激活、批准或签发下一阶段。不要使用 /goal、定时器、后台轮询或其他治理工具的运行机制。
+普通任务完成实施、审查、验收与必要收尾后关闭；父交付须独立组合审查通过，结论记录在交付 Issue 后
+才关闭。按规范第六节更新适用上层摘要与 Project，本轮交付结束后停止，不选择范围外任务。
+不要使用 /goal、定时器、后台轮询或其他治理工具的运行机制。
 """
 
 [agents]
@@ -50,5 +55,5 @@ description = "实施准确 Issue 中的一个已批准任务，提交、普通�
 config_file = "codex-governance/agents/implementer.toml"
 
 [agents.reviewer]
-description = "独立只读审查准确 PR 或阶段，提交绑定 PR 头的正式 Review，或返回阶段组合结果的审查结论。"
+description = "独立只读审查准确 PR 或交付组合结果，提交绑定 PR 头的正式 Review，或返回组合验收结论。"
 config_file = "codex-governance/agents/reviewer.toml"
