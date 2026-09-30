@@ -51,6 +51,19 @@ cp -i codex/agents/reviewer.example.toml "$codex_config_dir/codex-governance/age
 填写原生 `model`、`model_reasoning_effort` 字段。权限示例沿用本治理的 `danger-full-access` 和 `never`；
 它们不扩大任务授权或角色职责。账号与目录仍只维护在私有绑定中，不另加角色的 `GH_CONFIG_DIR` 默认副本。
 
+兼顾治理判断质量与执行成本时，可以在安装后的三个角色 TOML 中采用以下可选组合。表中列名对应
+原生配置字段；公共模板仍默认继承安装者已有配置。
+
+| 角色 | `model` | `model_reasoning_effort` |
+|---|---|---|
+| 范围规划者 `scope-planner` | `gpt-6-astra` | `high` |
+| 实现者 `implementer` | `gpt-6.1-sol` | `medium` |
+| 审查者 `reviewer` | `gpt-6-astra` | `xhigh` |
+
+这是按角色职责作出的选型建议，实际效果仍需结合项目任务评估。型号能力与可用推理等级参见
+[GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) 和
+[GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol) 的官方说明。
+
 Profile 使用顶层配置项，不放入基础配置的 `[profiles.codex-governance]` 表。示例的 `config_file`
 相对声明它的 Profile 文件解析，因此上述目录结构应保持对应。基础 `config.toml` 不需要注册治理角色。
 [Codex Profile 文档](https://learn.chatgpt.com/docs/config-file/config-advanced)、
