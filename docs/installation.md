@@ -1,7 +1,7 @@
 # 手动安装与本机配置
 
 本项目提供公共规则、Skill 和配置示例。填写后的本机绑定、原生运行配置和认证材料留在仓库外；日常使用
-与公共规则升级不需要修改版本化示例。当前配置接入方式在 Codex CLI `0.156.1` 上核对；使用 Git、GitHub
+与公共规则升级不需要修改版本化示例。当前配置接入方式在 Codex CLI `0.159.2` 上核对；使用 Git、GitHub
 CLI 和支持独立 Profile 文件及自定义角色的 Codex CLI。
 
 ## 1. 准备公共源与账号
@@ -35,21 +35,41 @@ cp -i templates/local.example.toml "$governance_binding_file"
 自定义位置时，在启动 Codex 的环境中设置 `CODEX_GOVERNANCE_CONFIG` 为该文件的实际绝对路径。
 这是本项目约定的定位变量，不是 Codex 原生配置加载选项。默认位置与字段语义统一见治理规范第四节。
 
-## 3. 安装原生 Profile 与角色
+## 3. 安装并注册原生角色
 
 在同一终端继续执行，将示例复制为仓库外的运行文件：
 
 ```bash
 mkdir -p "$codex_config_dir/codex-governance/agents"
-cp -i codex/runtime/codex-governance.config.example.toml "$codex_config_dir/codex-governance.config.toml"
 cp -i codex/agents/scope-planner.example.toml "$codex_config_dir/codex-governance/agents/scope-planner.toml"
 cp -i codex/agents/implementer.example.toml "$codex_config_dir/codex-governance/agents/implementer.toml"
 cp -i codex/agents/reviewer.example.toml "$codex_config_dir/codex-governance/agents/reviewer.toml"
 ```
 
-模型与推理等级默认继承已有 Codex 配置。需要覆盖时，编辑安装后的 Profile 或对应角色 TOML，在顶层
-填写原生 `model`、`model_reasoning_effort` 字段。权限示例沿用本治理的 `danger-full-access` 和 `never`；
-它们不扩大任务授权或角色职责。账号与目录仍只维护在私有绑定中，不另加角色的 `GH_CONFIG_DIR` 默认副本。
+将下列三个角色表合并进该入口实际使用的 `$codex_config_dir/config.toml`，保留其他配置；已有同名表时
+更新对应字段，不重复追加。相对 `config_file` 按声明它的配置文件目录解析，多入口共用角色时见第六节。
+
+```toml
+[agents."scope-planner"]
+description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：只读澄清准确 Issue 的范围、验收与决策缺口。"
+config_file = "codex-governance/agents/scope-planner.toml"
+
+[agents.implementer]
+description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：实施准确 Issue 的已批准任务，提交、推送并维护 PR。"
+config_file = "codex-governance/agents/implementer.toml"
+
+[agents.reviewer]
+description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：独立只读审查准确 PR 或交付组合，提交正式 Review 或返回组合结论。"
+config_file = "codex-governance/agents/reviewer.toml"
+```
+
+当前 CLI 默认启用子代理；若已有配置显式设置 `agents.enabled = false`，使用治理时需在原表中改为
+`true`。角色注册只使角色可用，不启用 GitHub 治理；三个角色只接收显式启用后由 orchestrator 交付的任务。
+
+普通启动保留该入口已有的主会话模型、推理等级和命令权限。需要覆盖时，编辑原生 `config.toml`、可选
+Profile 或对应角色 TOML 的顶层 `model`、`model_reasoning_effort` 等字段。角色权限示例沿用
+`danger-full-access` 和 `never`，父会话实时权限覆盖仍会应用到子代理；这些设置不扩大任务授权或角色职责。
+账号与目录仍只维护在私有绑定中，不另加角色的 `GH_CONFIG_DIR` 默认副本。
 
 兼顾治理判断质量与执行成本时，可以在安装后的三个角色 TOML 中采用以下可选组合。表中列名对应
 原生配置字段；公共模板仍默认继承安装者已有配置。
@@ -64,8 +84,15 @@ cp -i codex/agents/reviewer.example.toml "$codex_config_dir/codex-governance/age
 [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) 和
 [GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol) 的官方说明。
 
-Profile 使用顶层配置项，不放入基础配置的 `[profiles.codex-governance]` 表。示例的 `config_file`
-相对声明它的 Profile 文件解析，因此上述目录结构应保持对应。基础 `config.toml` 不需要注册治理角色。
+需要单独的治理启动预设时，可额外安装 Profile：
+
+```bash
+cp -i codex/runtime/codex-governance.config.example.toml "$codex_config_dir/codex-governance.config.toml"
+```
+
+该 Profile 使用顶层配置项，不放入基础配置的 `[profiles.codex-governance]` 表；示例提供
+`danger-full-access`、`never` 和子代理并发上限等预设。用 `--profile codex-governance` 选择它属于可选
+启动方式；普通启动的角色注册不依赖该文件。Profile 中的同名角色应指向同一组已安装文件。
 [Codex Profile 文档](https://learn.chatgpt.com/docs/config-file/config-advanced)、
 [角色配置路径说明](https://learn.chatgpt.com/docs/config-file/config-reference)
 
@@ -86,6 +113,8 @@ ln -s "$governance_source_dir/skills/codex-stage-orchestrator" "$HOME/.agents/sk
 项目自己的规则。片段通过本机绑定定位公共源，不填写真实账号或本机路径。
 采用 Project 时可增加 `项目看板：<Project URL>`，只填实际采用的看板；未配置时继续 Issue 闭环。
 Project 不增加本机绑定字段，起点与视图建议见第七节。
+已有决策记录时，可填写 `项目决策记录：<本项目已有决策 Issue 或索引的完整链接>`，或沿用当前合同和
+项目文档中的引用；各目标项目分别提供自己的入口。定位、交接和适用性判断见治理规范第六节“范围规划”。
 
 若希望在未接入治理的普通开发中也使用工程准则，在用户级 `AGENTS.md` 中合入以下读取说明，保留已有
 个人偏好和环境边界，不把个人全局文件复制到公共仓库：
@@ -101,21 +130,23 @@ ${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml。
 ## 5. 启动与核对
 
 ```bash
-codex --profile codex-governance -C /绝对路径/目标仓库
+codex -C /绝对路径/目标仓库
 ```
 
-启动 Profile 本身不启用治理。安装后用新会话核对公共规则、Skill 和角色配置来源；显式调用方式见
+普通启动后显式调用 `$codex-stage-orchestrator` 并给出明确需求即可，不必传入 `--profile`。
+安装后用新会话核对公共规则、Skill 和角色配置来源；完整调用方式见
 [README](../README.md#start)。身份核验只读取登录名，不读取认证文件。继承的 `GH_CONFIG_DIR` 即使不同，
 治理命令仍必须使用本角色绑定的目录。
 
 只核对新会话输入而不运行开发闭环时，可以在目标仓库执行：
 
 ```bash
-codex --profile codex-governance debug prompt-input '仅核对规则来源和角色配置，不启用治理，不执行任务。'
+codex debug prompt-input '仅核对规则来源和角色配置，不启用治理，不执行任务。'
 ```
 
-核对输出中的 Profile 指令与目标仓库规则，再检查该 Profile 的角色注册、各 `config_file` 指向的实际
-文件及 Skill 入口。输入渲染不能证明角色已运行、真实 GitHub 闭环已经执行或旧会话已重新加载规则。
+核对输出中的目标仓库规则；同时检查该入口实际加载的基础配置、角色注册、各 `config_file` 指向的
+实际文件及共享 Skill 入口。使用可选 Profile 时还须核对它的覆盖。输入中出现角色名称不能证明原生角色
+已加载；输入渲染也不能证明角色已运行、真实 GitHub 闭环已经执行或旧会话已重新加载规则。
 不要公开包含本机路径的完整输出。
 
 新会话中的本机路径和配置核对结果留在私有交接中。公开 Issue、PR、Review 和附件使用仓库相对路径及
@@ -123,11 +154,17 @@ codex --profile codex-governance debug prompt-input '仅核对规则来源和角
 
 ## 6. 多个入口、更新与迁移
 
-- 多个 `CODEX_HOME` 可以各自安装原生文件，共用同一份私有绑定和公共源。
-- 如果通过符号链接共用一个 Profile，在该私有 Profile 的 `config_file` 中填写共用角色副本的实际绝对
-  路径，避免不同入口的相对路径基准不同。真实路径只存在于仓库外的私有 Profile。
+- `codex`、`codex-b`、`codex-c` 等入口按各自的 `CODEX_HOME` 加载基础 `config.toml`；未设置时使用
+  `~/.codex`。先确认启动脚本或继承环境实际选择的目录，分别在三份基础配置中注册上述三个角色。
+- 同一用户的多个入口共用 `~/.agents/skills/codex-stage-orchestrator`、私有绑定与公共源。角色副本也可
+  只安装一组，各基础配置的 `config_file` 填写这组文件的实际绝对路径；TOML 中不写未展开的变量。
+  保留各入口自己的主会话设置、认证和会话数据，不链接或复制整份基础配置与认证目录。
+- 已共用可选 Profile 的入口可保留该链接；Profile 的角色路径也指向上述共用文件。真实绝对路径
+  只保存在仓库外的私有配置中。角色注册与共享 Skill 均在新会话核对，旧会话不保证热加载。
 - 更新公共源后，比较公共示例和已安装副本，手动合并角色指令与原生设置的变化，保留自己的模型、
   推理等级和权限覆盖。本机绑定不随公共源更新被覆盖，不将安装后的文件反向提交。
+- reviewer 升级还须把必要指令合并到实际生效配置的 `agents.reviewer.config_file` 指向的已安装文件；
+  仅更新公共示例不会更新该副本。共用符号链接时修改实际目标并保留链接，新会话确认读取更新后的入口。
 - 从旧的个人配置版本迁移时，先在仓库外保留必要的非认证配置备份，再填写集中绑定、安装角色副本和
   更新公共规则引用。不要备份或复制认证文件，也不改动其他治理工具的目录、服务或认证材料。
 - 移动公共源时，同步更新私有 `source_root` 和 Skill 链接；新会话用于确认切换生效，已运行会话可能
@@ -159,3 +196,56 @@ Project 管理项目目标与范围概述、规划入口和视图；任务合同
 进度，二者都不签发任务。只有 Issue 已关闭才把展示更新为“已结束”；取消和重复关闭不表示交付成功。
 合同完整时，展示同步失败留在现有进度与交付报告中，不阻塞实施。创建 Project、修改字段结构或批量
 导入须另行明确提出；本仓库的安装与规则升级本身不执行这些线上接入动作。
+
+<a id="ocr-review"></a>
+
+## 8. OCR 辅助审查
+
+Open Code Review 的 `delegate` 命令提供文件筛选信息与规则解析，实际推理由当前 Codex reviewer
+完成，沿用其模型及额度来源；读取规则和分析代码仍消耗 Codex 额度。无需给 OCR 配置模型端点或 API Key。
+使用条件、决策核对、审查范围和复审规则统一见
+[治理规范第六节“独立 Review”](../governance/codex-development-governance.md#3-独立-review)。
+
+安装使用官方 CLI，本节以 `1.12.11` 核对，要求 Node.js 至少 14、Git 至少 2.41。首次安装或明确升级时执行：
+
+```bash
+npm install -g @alibaba-group/open-code-review@1.12.11
+ocr --version
+ocr delegate rule --help
+ocr delegate preview --help
+```
+
+JSON 输出需要 OCR 至少 `1.9.0`；使用其他版本时核对这两个子命令及参数是否可用。官方 Codex 插件可以
+提供可调用 Skill，但不是直接调用 CLI 的必要依赖；安装插件不代表选择了委托模式。本治理直接使用
+`ocr delegate`，不调用完整 `ocr review` 或自动修复流程。安装与版本依据见
+[官方插件说明](https://github.com/alibaba/open-code-review/blob/v1.12.11/plugins/open-code-review/README.md)和
+[委托模式说明](https://github.com/alibaba/open-code-review/blob/v1.12.11/plugins/open-code-review/skills/open-code-review-delegate/SKILL.md)。
+
+以下 Bash 示例中的 `review_repo` 是已交付的准确审查工作目录，`review_base_sha` 与 `review_head_sha`
+来自实际 PR 的比较基准及本次审查头，不以固定分支名代替。`review_paths` 是本轮相关文件路径的数组，
+由完整差异和实际影响确定。批量获取规则：
+
+```bash
+ocr delegate rule \
+  --repo "$review_repo" \
+  --from "$review_base_sha" --to "$review_head_sha" \
+  --format json -- "${review_paths[@]}"
+```
+
+需要理解 OCR 的文件筛选结果时，使用以下命令查看 `reviewable_files`、`excluded_files` 及排除原因。
+Range 模式返回的 `merge_base` 对应分支比较起点；审查 Git 差异时使用同一比较语义。
+
+```bash
+ocr delegate preview \
+  --repo "$review_repo" \
+  --from "$review_base_sha" --to "$review_head_sha" \
+  --format json
+```
+
+OCR 默认筛选可能排除测试、夹具、生成内容和锁文件，删除文件也不会进入其主审列表；Markdown 等文件
+可能没有适用的内置规则。上述结果只描述 OCR 的支持范围，不替代治理要求的完整差异审查。
+
+读取返回规则的 `source`、`pattern` 和正文。OCR 按显式 `--rule`、项目、全局、内置的顺序取首个匹配，
+自定义规则默认替换内置规则；`merge_system_rule` 仅合并内置规则，不裁定规则之间的效力。
+项目规则及其引用正文从磁盘读取，`--to` 不会自动将它们固定到指定提交；使用对应审查版本的现有现场，
+避免混入其他分支的规则。治理正文继续在其权威位置维护，无需复制成 `rule.json` 或另建规则状态文件。

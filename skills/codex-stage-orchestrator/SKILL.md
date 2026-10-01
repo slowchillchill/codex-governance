@@ -13,6 +13,9 @@ description: 仅在用户显式调用 codex-stage-orchestrator 并在已接入�
 同一已授权交付的澄清与继续执行沿用原授权；范围外新任务需重新显式调用。
 `agents/openai.yaml` 保持 `policy.allow_implicit_invocation: false`。
 
+普通启动即可调用本 Skill；三个治理角色由启动时加载的原生配置注册，安装方式见
+[安装说明](../../docs/installation.md#3-安装并注册原生角色)。调用 Skill 不切换 Profile、模型或命令权限。
+
 确认启用后，先通过工具只读定位本机绑定：非空的 `CODEX_GOVERNANCE_CONFIG` 指定文件，否则读取
 `${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml`。这是供代理读取的普通 TOML，不是
 Codex 原生配置层。通过 `paths.source_root` 定位治理源，读取 `github.controller` 的 `config_dir` 与 `login`。

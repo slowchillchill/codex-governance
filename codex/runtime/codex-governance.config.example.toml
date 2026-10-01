@@ -1,3 +1,4 @@
+# 可选启动预设；普通 config.toml 注册三个角色后，无需 --profile 也可显式调用治理 Skill。
 # 模型与推理等级默认继承用户配置；需要覆盖时，在安装后的本机文件设置原生字段。
 sandbox_mode = "danger-full-access"
 approval_policy = "never"
@@ -47,13 +48,13 @@ enabled = true
 max_concurrent_threads_per_session = 3
 
 [agents."scope-planner"]
-description = "只读澄清准确 Issue 中的当前需求，返回验收场景、最小任务、必要依据与决策缺口。"
+description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：只读澄清准确 Issue 的范围、验收与决策缺口。"
 config_file = "codex-governance/agents/scope-planner.toml"
 
 [agents.implementer]
-description = "实施准确 Issue 中的一个已批准任务，提交、普通推送并创建或更新关联 PR。"
+description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：实施准确 Issue 的已批准任务，提交、推送并维护 PR。"
 config_file = "codex-governance/agents/implementer.toml"
 
 [agents.reviewer]
-description = "独立只读审查准确 PR 或交付组合结果，提交绑定 PR 头的正式 Review，或返回组合验收结论。"
+description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：独立只读审查准确 PR 或交付组合，提交正式 Review 或返回组合结论。"
 config_file = "codex-governance/agents/reviewer.toml"
