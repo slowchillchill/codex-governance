@@ -249,3 +249,56 @@ OCR 默认筛选可能排除测试、夹具、生成内容和锁文件，删除�
 自定义规则默认替换内置规则；`merge_system_rule` 仅合并内置规则，不裁定规则之间的效力。
 项目规则及其引用正文从磁盘读取，`--to` 不会自动将它们固定到指定提交；使用对应审查版本的现有现场，
 避免混入其他分支的规则。治理正文继续在其权威位置维护，无需复制成 `rule.json` 或另建规则状态文件。
+
+<a id="codebase-memory"></a>
+
+## 9. codebase-memory-mcp 接入与维护
+
+代码检索的使用原则见[工程准则](../governance/engineering-principles.md)，角色职责和只读边界见
+[治理规范](../governance/codex-development-governance.md)。本节只说明客户端配置与验证机制；接入 MCP
+不启用 GitHub 治理。索引是由源码生成、可重建的缓存，不导入 Issue、Project 的合同或批准状态，也不使用
+`manage_adr` 镜像项目决策。
+
+本节依据已安装 `0.10.8` 核对，本次配置修复复用该版本；这不是对后续使用者的永久版本限制。后续升级
+须单独核对索引格式、工具行为和配置副作用。安装或维护只修改明确指定的客户端，不使用会自动配置其他
+客户端的通用一键安装流程。保留已有认证、模型、角色和 Profile，不复制整份基础配置。
+
+在每个实际使用的 `CODEX_HOME/config.toml` 中合并以下配置；已有同名表时更新原表。下列路径均为
+占位，替换为仓库外的实际绝对路径，不在 TOML 中保留未展开的环境变量：
+
+```toml
+[mcp_servers.codebase-memory-mcp]
+command = "/绝对路径/工具目录/codebase-memory-mcp"
+
+[mcp_servers.codebase-memory-mcp.env]
+CBM_CACHE_DIR = "/绝对路径/仓库外缓存/codebase-memory-mcp"
+```
+
+`codex`、`codex-b`、`codex-c` 分别注册同一二进制构建和同一规范化缓存目录；共享 `AGENTS.md` 不会共享
+MCP 配置。缓存内部按真实工作树区分项目，不把不同路径强行配置成同一个项目。该版本已有同账号共享
+守护进程和项目级并发协调，无需另建锁；所有活动进程必须使用相同版本、构建、协调 ABI 和规范化缓存。
+更换构建或缓存前先结束相关活动会话，再统一更新并重启，遵守
+[该版本的会话协调说明](https://github.com/DeusData/codebase-memory-mcp/blob/v0.10.8/README.md#session-coordination-daemon)。
+
+首次使用通过 `list_projects` 选择真实任务工作树，用 `index_status` 核对根目录和当前状态，并按
+工程准则用 `check_index_coverage` 及当前源码核对相关路径或范围的新鲜度与解析缺口；`ready` 和
+`git.head_sha` 不能证明索引对应的源码版本。确有索引准备需求时，由主会话或实现者对匹配根目录调用
+`index_repository`，使用 `persistence=false`；不在每次任务或恢复时全量重建。主动新鲜度确认的时点与
+刷新责任统一按治理规范第四节执行，规划者和审查者沿用其中规定的查询及回退流程。
+
+仓库外缓存边界必须在接入生效前验证：`0.10.8` 在仓库已有 `.codebase-memory/graph.db.zst` 时，即使
+`persistence=false`，后续索引仍可能刷新它；导出还可能写入 `.codebase-memory` 元数据及 Git 配置。
+MCP 初始化和后台 watcher 也可能触发索引写入，不能只检查显式工具调用。先核对已有仓库内产物及自动
+索引配置，不为接入擅自删除产物；无法保证被审对象不变时，规划和审查使用源码查询。依据见
+[索引发布实现](https://github.com/DeusData/codebase-memory-mcp/blob/v0.10.8/src/pipeline/pipeline.c#L2492)和
+[产物导出实现](https://github.com/DeusData/codebase-memory-mcp/blob/v0.10.8/src/pipeline/artifact.c#L366)。
+
+接入验证针对以下实际失败条件，结果保留在私有交接或脱敏的现有交付证据中：
+
+- 三个入口分别执行 MCP 列表核对并实际调用工具；仅配置可解析或 `codex mcp list` 有条目不证明可用。
+- 用主工作树和一个任务工作树验证项目不会混用；源码修改后能够识别相关范围过期并确认刷新，无法
+  确认时正确回退到当前源码。
+- 覆盖 MCP 初始化、查询和后台刷新，确认被审工作树及 Git 配置未被写入；检查既有产物与忽略文件，
+  不能只凭 `git status` 干净得出结论。工具自身的仓库外派生缓存遵守治理正文的允许范围。
+- 用新会话核对三个入口、已安装角色及适用 Profile 的实际规则来源，沿用第五节的方法；工具不可用时
+  能继续源码查询，不为证明配置生效而执行 GitHub 合并或另设审批流程。
