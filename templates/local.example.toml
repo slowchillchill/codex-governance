@@ -14,3 +14,11 @@ config_dir = "/absolute/path/to/gh-controller"
 [github.implementer]
 login = "YOUR_IMPLEMENTER_LOGIN"
 config_dir = "/absolute/path/to/gh-implementer"
+
+# 可选：每个需要归档的仓库分别添加一组；实际路径只填写在仓库外的私有绑定中。
+# git_common_dir 取该仓库 git rev-parse --path-format=absolute --git-common-dir 的实际路径。
+# root 必须位于实际挂载的 mount_point 内，且在待清理工作树和构建输出之外。
+# [[evidence_archives]]
+# git_common_dir = "/absolute/path/to/project/.git"
+# root = "/absolute/mounted-backup/projects/project"
+# mount_point = "/absolute/mounted-backup"
