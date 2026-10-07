@@ -1,7 +1,7 @@
 # 手动安装与本机配置
 
 本项目提供公共规则、Skill 和配置示例。填写后的本机绑定、原生运行配置和认证材料留在仓库外；日常使用
-与公共规则升级不需要修改版本化示例。当前配置接入方式在 Codex CLI `0.159.2` 上核对；使用 Git、GitHub
+与公共规则升级不需要修改版本化示例。当前配置接入方式在 Codex CLI `0.160.1` 上核对；使用 Git、GitHub
 CLI 和支持独立 Profile 文件及自定义角色的 Codex CLI。
 
 ## 1. 准备公共源与账号
@@ -97,9 +97,10 @@ cp -i codex/runtime/codex-governance.config.example.toml "$codex_config_dir/code
 ```
 
 该 Profile 使用顶层配置项，不放入基础配置的 `[profiles.codex-governance]` 表；示例提供
-`danger-full-access`、`never` 和子代理并发上限等预设。用 `--profile codex-governance` 选择它属于可选
-启动方式；普通启动的角色注册不依赖该文件。Profile 中的同名角色应指向同一组已安装文件。
-[Codex Profile 文档](https://learn.chatgpt.com/docs/config-file/config-advanced)、
+`danger-full-access`、`never` 和子代理并发上限等预设。用 `--profile codex-governance` 启动时，CLI 在该入口
+的基础配置上叠加 `$codex_config_dir/codex-governance.config.toml`。这是可选启动方式，普通启动的角色注册
+不依赖该文件。Profile 中的同名角色应指向同一组已安装文件，升级时仍须同步 Profile 中的指令与注册描述。
+[Codex Profile 文档](https://learn.chatgpt.com/docs/config-file/config-advanced#profiles)、
 [角色配置路径说明](https://learn.chatgpt.com/docs/config-file/config-reference)
 
 ## 4. 接入 Skill 与工程规则
@@ -165,12 +166,15 @@ codex debug prompt-input '仅核对规则来源和角色配置，不启用治理
 - 同一用户的多个入口共用 `~/.agents/skills/codex-stage-orchestrator`、私有绑定与公共源。角色副本也可
   只安装一组，各基础配置的 `config_file` 填写这组文件的实际绝对路径；TOML 中不写未展开的变量。
   保留各入口自己的主会话设置、认证和会话数据，不链接或复制整份基础配置与认证目录。
-- 已共用可选 Profile 的入口可保留该链接；Profile 的角色路径也指向上述共用文件。真实绝对路径
-  只保存在仓库外的私有配置中。角色注册与共享 Skill 均在新会话核对，旧会话不保证热加载。
-- 更新公共源后，比较公共示例和已安装副本，手动合并角色指令与原生设置的变化，保留自己的模型、
-  推理等级和权限覆盖。本机绑定不随公共源更新被覆盖，不将安装后的文件反向提交。
-- reviewer 升级还须把必要指令合并到实际生效配置的 `agents.reviewer.config_file` 指向的已安装文件；
-  仅更新公共示例不会更新该副本。共用符号链接时修改实际目标并保留链接，新会话确认读取更新后的入口。
+- 已共用可选 Profile 的入口保留该链接，更新链接指向的实际 `codex-governance.config.toml`；独立副本分别
+  更新。Profile 的角色路径也指向上述共用文件。真实绝对路径只保存在仓库外的私有配置中。
+- 更新公共源后，对照角色示例、Profile 示例和本节注册说明，合并三个角色的指令、各入口基础配置的
+  角色注册描述，以及实际 Profile 中的指令和角色注册描述。仅更新公共示例或三个角色文件，不能证明
+  基础配置与 Profile 已同步；可选 Profile 即使平时未使用，也须纳入已安装配置的升级范围。
+- 合并时保留各入口及角色自己的模型、推理等级、权限覆盖和私有路径，不用整份示例覆盖安装文件。
+  本机绑定不随公共源更新被覆盖，不将安装后的文件反向提交。共用符号链接时修改实际目标并保留链接。
+- 在新会话中分别核对各入口的基础配置与可选 Profile，确认全局规则、角色注册及其 `config_file` 实际
+  目标、Profile 指令和共享 Skill 来源均已更新；磁盘文件已同步不代表旧会话或既有子代理已热加载。
 - 从旧的个人配置版本迁移时，先在仓库外保留必要的非认证配置备份，再填写集中绑定、安装角色副本和
   更新公共规则引用。不要备份或复制认证文件，也不改动其他治理工具的目录、服务或认证材料。
 - 移动公共源时，同步更新私有 `source_root` 和 Skill 链接；新会话用于确认切换生效，已运行会话可能
@@ -182,9 +186,9 @@ codex debug prompt-input '仅核对规则来源和角色配置，不启用治理
 
 ## 7. Project 接入建议
 
-以下是选择采用 Project 时的配置建议，不是普通任务的前置条件，也不授权代理在线创建或修改看板结构。
+以下是选择采用 Project 时的配置建议，不是任务执行的前置条件，也不授权代理在线创建或修改看板结构。
 Project 管理项目目标与范围概述、规划入口和视图；任务合同、授权及完成事实遵守
-[工程准则第八节](../governance/engineering-principles.md#8-github-任务治理)，维护程序遵守
+[治理规范](../governance/codex-development-governance.md)，维护程序遵守
 [治理规范第五节](../governance/codex-development-governance.md#五启动与恢复)。
 
 - 以 Kanban 为起点，`Status` 建议为待办、进行中、审查中、暂停、已结束。

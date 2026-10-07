@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="850" viewBox="0 0 1280 850" role="img" aria-labelledby="title desc">
   <title id="title">在 GitHub 中组织大型项目</title>
-  <desc id="desc">数据平台组织关系示意。GitHub Project 的项目总览、执行看板与模块视图展示同一组任务。父 Issue 保存首个可用版本的整体目标、已批准子任务与组合验收，包含数据接入、查询接口、管理界面三个子 Issue。各任务引用仓库技术文档，关联 PR、Review 和提交。普通任务可以直接进入看板，父交付通过组合验收后关闭。示例状态并非真实项目进度。</desc>
+  <desc id="desc">数据平台组织关系示意。GitHub Project 的项目总览、执行看板与模块视图展示同一组任务。父 Issue 保存首个可用版本的整体目标、已批准子任务与组合验收，包含数据接入、查询接口、管理界面三个子 Issue。各任务引用仓库技术文档，关联 PR、Review 和提交。单 Issue 交付可以直接进入看板，父交付通过组合验收后关闭。示例状态并非真实项目进度。</desc>
   <defs>
     <linearGradient id="background" x2="1" y2="1"><stop stop-color="#0b1424"/><stop offset="1" stop-color="#14273c"/></linearGradient>
     <linearGradient id="accent" x2="1"><stop stop-color="#54e1c5"/><stop offset="1" stop-color="#75a6ff"/></linearGradient>
@@ -89,6 +89,6 @@
   </g>
   <text x="640" y="754" text-anchor="middle" class="body">各任务分别引用适用技术文档，并关联自己的实现与审查证据。</text>
   <path d="M64 777 H1216" stroke="#30465d"/>
-  <text x="64" y="815" class="muted">普通任务可直接进入看板 · 模块用标签分类</text>
+  <text x="64" y="815" class="muted">单 Issue 交付可直接进入看板 · 模块用标签分类</text>
   <text x="1216" y="815" text-anchor="end" fill="#a0d8ce" font-size="18">父交付通过组合验收后关闭</text>
 </svg>

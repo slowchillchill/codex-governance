@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="790" viewBox="0 0 1280 790" role="img" aria-labelledby="title desc">
   <title id="title">Codex Governance 治理框架</title>
-  <desc id="desc">Project 管理总体规划与展示，Issue 保存任务合同。用户签发普通任务或父交付后，主会话只推进已批准范围，顺序协调规划、实现与独立审查；父交付通过组合验收后结束。PR、Review 与 Git 保存实现及审查证据。</desc>
+  <desc id="desc">Project 管理总体规划与展示，Issue 保存任务合同。用户签发单 Issue 交付或父交付后，主会话只推进已批准范围，顺序协调规划、实现与独立审查；父交付通过组合验收后结束。PR、Review 与 Git 保存实现及审查证据。</desc>
   <defs>
     <linearGradient id="background" x2="1" y2="1"><stop stop-color="#0b1424"/><stop offset="1" stop-color="#14273c"/></linearGradient>
     <linearGradient id="accent" x2="1"><stop stop-color="#54e1c5"/><stop offset="1" stop-color="#75a6ff"/></linearGradient>
