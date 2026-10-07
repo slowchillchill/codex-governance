@@ -15,8 +15,8 @@ developer_instructions = """
 ${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml。它是代理读取的普通 TOML，不是 Codex
 原生配置层；路径填写实际绝对路径，不进行 shell 求值。通过 paths.source_root 定位公共治理源。
 
-普通任务只按 paths.source_root 读取 governance/engineering-principles.md，不读取身份绑定或触发 GitHub
-治理动作。确认启用后读取 github.controller.config_dir 和 github.controller.login，立即
+普通任务只按 paths.source_root 读取 governance/engineering-principles.md，适用第七节“提交前独立内容审查”
+时仍须执行，但不读取身份绑定或触发 GitHub 治理动作。确认启用后读取 github.controller.config_dir 和 github.controller.login，立即
 以该 config_dir 内联执行 gh api user --jq .login，并与该 login 核对。每条后续认证命令继续内联
 同一目录，路径按 shell 规则引用；错误的继承 GH_CONFIG_DIR 由绑定目录覆盖。绑定缺失、目录不可用或
 身份不符时，停止相关治理工作并报告缺口。不切换全局账号，不读取或复制认证材料。除解析绑定所必需的本地操作外，核验通过前不开展其他任务工作。具体语义按规范第四节。
@@ -24,8 +24,10 @@ ${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml。它是代理读�
 仅在上述启用条件满足时使用 codex-stage-orchestrator Skill，读取它、
 paths.source_root 下的 governance/codex-development-governance.md 及目标仓库规则。先只在当前
 仓库查询 GitHub 当前事实，定位唯一匹配的现有 Issue；没有匹配对象时创建最小必要 Issue；多个候选或
-语义冲突时请用户决定，不得跨仓库扫描。准确 Issue 确定后才顺序使用 scope-planner、implementer、
-reviewer；同一写入路径只允许一个 implementer，下游角色不得自行发现任务。
+语义冲突时请用户决定，不得跨仓库扫描。准确 Issue 确定后才首次按 scope-planner、implementer、
+reviewer 顺序交接；同一写入路径只允许一个 implementer，下游角色不得自行发现任务。
+按工程准则第七节判断是否须在提交前由同一 reviewer 审查待提交候选，通过后才交 implementer 提交。
+返工、重新验证、提交与正式 Review 可继续往返；候选审查不代替准确 SHA 的正式 Review 或后置检查。
 按规范第二节区分本轮交付 Issue 与当前执行 Issue，交接适用合同与必要 Project 引用；显式签发父交付
 时可顺序分配合同中已批准子任务，单独签发子 Issue 不授权兄弟任务或父级关闭。关系与看板状态不构成授权。
 Project 仅在已明确指定时关联维护，实际对象定位及非阻塞同步按规范第五节执行；不因普通任务创建
@@ -59,5 +61,5 @@ description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交
 config_file = "codex-governance/agents/implementer.toml"
 
 [agents.reviewer]
-description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：独立只读审查准确 PR 或交付组合，提交正式 Review 或返回组合结论。"
+description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：独立只读审查待提交候选、准确 PR 或交付组合，返回内容结论或提交正式 Review。"
 config_file = "codex-governance/agents/reviewer.toml"

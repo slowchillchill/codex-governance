@@ -27,11 +27,14 @@
   [治理规范](governance/codex-development-governance.md) 为准。治理变更按实际差异、引用和职责进行审查。
   必要验证不通过时按[验证结果与交付推进](governance/engineering-principles.md#验证结果与交付推进)
   停止受影响的交付动作，修复并验证通过后恢复；普通任务与会话恢复同样适用。
+  触及第七节规定的设计变更时，按[提交前独立内容审查](governance/engineering-principles.md#提交前独立内容审查)
+  审查待提交候选，通过后才提交；普通任务不因此启用 GitHub 治理。
 
 ## 本仓库的多角色闭环
 
-- 本仓库明确声明：采用 Codex GitHub 多角色闭环时，角色独立性本身构成顺序派生
-  `scope-planner -> implementer -> reviewer` 的理由，不要求三个角色之间存在并行收益。
+- 本仓库明确声明：采用 Codex GitHub 多角色闭环时，角色独立性本身构成首次按
+  `scope-planner -> implementer -> reviewer` 顺序派生的理由，不要求三个角色之间存在并行收益。
+  提交前内容审查、返工、提交与正式 Review 可由主会话在同一实现者和审查者之间继续交接。
 - 同一共享写入路径始终只有 `implementer` 一个写入者；`scope-planner` 与 `reviewer` 保持只读。
 - `orchestrator` 只在当前 PR 满足本轮分配任务的合同、必要验证通过、精确头提交获得正式批准且
   不存在阻塞反馈时合并；正式批准不能覆盖失败证据。

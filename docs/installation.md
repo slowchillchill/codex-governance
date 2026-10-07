@@ -65,7 +65,7 @@ description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交
 config_file = "codex-governance/agents/implementer.toml"
 
 [agents.reviewer]
-description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：独立只读审查准确 PR 或交付组合，提交正式 Review 或返回组合结论。"
+description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：只读审查待提交候选、准确 PR 或交付组合；仅对 PR 提交正式 Review。"
 config_file = "codex-governance/agents/reviewer.toml"
 ```
 
@@ -210,7 +210,7 @@ Project 管理项目目标与范围概述、规划入口和视图；任务合同
 Open Code Review 的 `delegate` 命令提供文件筛选信息与规则解析，实际推理由当前 Codex reviewer
 完成，沿用其模型及额度来源；读取规则和分析代码仍消耗 Codex 额度。无需给 OCR 配置模型端点或 API Key。
 使用条件、决策核对、审查范围和复审规则统一见
-[治理规范第六节“独立 Review”](../governance/codex-development-governance.md#3-独立-review)。
+[治理规范第六节“独立审查与正式 Review”](../governance/codex-development-governance.md#3-独立审查与正式-review)。
 
 安装使用官方 CLI，本节以 `1.12.11` 核对，要求 Node.js 至少 14、Git 至少 2.41。首次安装或明确升级时执行：
 
@@ -227,7 +227,12 @@ JSON 输出需要 OCR 至少 `1.9.0`；使用其他版本时核对这两个子�
 [官方插件说明](https://github.com/alibaba/open-code-review/blob/v1.12.11/plugins/open-code-review/README.md)和
 [委托模式说明](https://github.com/alibaba/open-code-review/blob/v1.12.11/plugins/open-code-review/skills/open-code-review-delegate/SKILL.md)。
 
-以下 Bash 示例中的 `review_repo` 是已交付的准确审查工作目录，`review_base_sha` 与 `review_head_sha`
+提交前候选没有 PR 头，不能套用下列提交范围命令。只有已核实的调用方式能够准确覆盖当前候选时才用
+OCR 辅助；否则说明适用方式的缺口，按完整待提交差异及真实源码完成内容审查。不为工具提前创建提交
+或 PR，也不把旧 `HEAD` 范围冒充候选。提交后使用实际 PR 范围取得适用规则，发现新问题时补审受影响
+内容，复用仍适用的证据。
+
+以下 Bash 示例用于已有 PR，其中 `review_repo` 是已交付的准确审查工作目录，`review_base_sha` 与 `review_head_sha`
 来自实际 PR 的比较基准及本次审查头，不以固定分支名代替。`review_paths` 是本轮相关文件路径的数组，
 由完整差异和实际影响确定。批量获取规则：
 
