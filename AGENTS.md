@@ -25,13 +25,16 @@
 - 不读取、显示、复制或提交令牌、私钥、口令、`.env` 正文或其他认证材料。
 - 通用工程原则读取并遵守 [工程准则](governance/engineering-principles.md)；本仓库闭环权责以
   [治理规范](governance/codex-development-governance.md) 为准。治理变更按实际差异、引用和职责进行审查。
+  必要验证不通过时按[验证结果与交付推进](governance/engineering-principles.md#验证结果与交付推进)
+  停止受影响的交付动作，修复并验证通过后恢复；普通任务与会话恢复同样适用。
 
 ## 本仓库的多角色闭环
 
 - 本仓库明确声明：采用 Codex GitHub 多角色闭环时，角色独立性本身构成顺序派生
   `scope-planner -> implementer -> reviewer` 的理由，不要求三个角色之间存在并行收益。
 - 同一共享写入路径始终只有 `implementer` 一个写入者；`scope-planner` 与 `reviewer` 保持只读。
-- `orchestrator` 只在当前 PR 精确头提交获得正式批准且不存在阻塞反馈时合并。
+- `orchestrator` 只在当前 PR 满足本轮分配任务的合同、必要验证通过、精确头提交获得正式批准且
+  不存在阻塞反馈时合并；正式批准不能覆盖失败证据。
 - Profile 默认以 `danger-full-access` 与 `never` 提供等价 YOLO 的命令执行权限，三个子代理使用相同
   默认值；父会话传给子代理的实时权限覆盖只改变命令执行权限，不扩大角色职责、GitHub 身份、任务
   范围或破坏性操作授权，也不解除管理员绕过禁令。
