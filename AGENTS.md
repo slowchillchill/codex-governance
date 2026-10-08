@@ -27,6 +27,8 @@
   [治理规范](governance/codex-development-governance.md) 为准。治理变更按实际差异、引用和职责进行审查。
   必要验证不通过时按[验证结果与交付推进](governance/engineering-principles.md#验证结果与交付推进)
   停止受影响的交付动作，修复并验证通过后恢复；未启用治理的任务与会话恢复同样适用。
+  执行偏差、错误与困难按[执行偏差与异常处理](governance/engineering-principles.md#执行偏差与异常处理)
+  核对方案与校验依据、联网查证，并遵守停止汇报条件。
   触及第七节规定的设计变更时，按[提交前独立内容审查](governance/engineering-principles.md#提交前独立内容审查)
   审查待提交候选，通过后才提交；未启用治理的任务不因此启用 GitHub 治理。
 
