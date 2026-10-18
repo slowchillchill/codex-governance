@@ -11,17 +11,19 @@ description: 仅在用户显式调用 codex-stage-orchestrator 并在已接入�
 显式调用是 `$codex-stage-orchestrator` 或明确要求“使用 codex-stage-orchestrator”。
 未显式调用或用户明确禁止时，按当前任务授权处理，不执行治理身份核验、Issue 查询或角色派生。
 同一已授权交付的澄清与继续执行沿用原授权；范围外新任务需重新显式调用。
+研究交接材料或研究 Skill 的启用不替代上述条件，也不授权本 Skill 接管研究流程。
 `agents/openai.yaml` 保持 `policy.allow_implicit_invocation: false`。
 
 普通启动即可调用本 Skill；三个治理角色由启动时加载的原生配置注册，安装方式见
 [安装说明](../../docs/installation.md#3-安装并注册原生角色)。调用 Skill 不切换 Profile、模型或命令权限。
 
 确认启用后，先通过工具只读定位本机绑定：非空的 `CODEX_GOVERNANCE_CONFIG` 指定文件，否则读取
-`${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml`。这是供代理读取的普通 TOML，不是
-Codex 原生配置层。通过 `paths.source_root` 定位治理源，读取 `github.controller` 的 `config_dir` 与 `login`。
-取得绑定后立即以该目录内联执行 `gh api user --jq .login` 并核对预期登录名；路径按 shell 规则引用。
-绑定目录覆盖继承值，绑定缺失、目录不可用或身份不符时停止相关治理工作。后续认证命令内联同一目录，
-不切换全局账号，不读取或复制认证材料。除解析绑定所必需的本地操作外，核验通过前不开展其他任务工作。配置与身份细则见治理规范第四节。
+`${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml`。通过 `paths.source_root` 定位其下
+`governance/codex-development-governance.md`，先读取“本机配置与规则定位”和“身份核验与命令归属”。
+按这两节读取 `github.controller.config_dir` 与 `github.controller.login`，立即内联绑定目录执行
+`gh api user --jq .login` 核对身份。核验准备仅限这两节与绑定解析；核验通过前不开展具体任务工作。
+绑定缺失、目录不可用或身份不符时停止相关治理工作。后续认证继续内联同一绑定目录，不切换全局账号，
+不读取或复制认证材料。
 
 ## 读取与执行
 
@@ -34,6 +36,9 @@ Codex 原生配置层。通过 `paths.source_root` 定位治理源，读取 `git
   适用合同和必要 Project 引用，不自行发现任务。
 - 首次按 `scope-planner -> implementer -> reviewer` 顺序交接，同一共享路径只有一个实现者。主会话
   回读证据，在同一实现者和审查者之间组织必要的候选审查、返工、提交和正式 Review。
+- 研究来源任务按[研究来源需求的接收与验证](../../governance/codex-development-governance.md#研究来源需求的接收与验证)
+  确定工程范围，按[工程交付返回研究](../../governance/codex-development-governance.md#工程交付返回研究)交回事实；
+  工程验收和研究结论各按自身合同，不自动恢复研究或关闭来源研究任务。
 - 公开证据使用仓库相对路径，准确工作树绝对路径保留在私有交接中；发布边界按规范第三节执行。
 - 按[提交前独立内容审查](../../governance/engineering-principles.md#提交前独立内容审查)处理适用候选，通过后才提交；
   候选结论不替代当前 PR 精确头的正式批准。
