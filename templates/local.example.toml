@@ -5,15 +5,10 @@
 [paths]
 source_root = "/absolute/path/to/codex-governance"
 
-# 主会话、范围规划和独立审查共用控制账号。
-[github.controller]
-login = "YOUR_CONTROLLER_LOGIN"
-config_dir = "/absolute/path/to/gh-controller"
-
-# 实现账号负责推送和创建 PR，控制账号负责正式审查与合并。
-[github.implementer]
-login = "YOUR_IMPLEMENTER_LOGIN"
-config_dir = "/absolute/path/to/gh-implementer"
+# 开发组全部角色与平台操作使用同一账号，PR 由实际签发组创建。
+[github.development]
+login = "YOUR_DEVELOPMENT_LOGIN"
+config_dir = "/absolute/path/to/gh-development"
 
 # 可选：每个需要归档的仓库分别添加一组；实际路径只填写在仓库外的私有绑定中。
 # git_common_dir 取该仓库 git rev-parse --path-format=absolute --git-common-dir 的实际路径。

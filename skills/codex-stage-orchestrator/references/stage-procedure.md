@@ -6,7 +6,7 @@
 
 ## 1. 确定 Issue 并恢复事实
 
-按规范第二节确认启用后，依第四节只读解析本机绑定、内联绑定的 `GH_CONFIG_DIR` 核验身份，再按第二、
+按规范第二节确认启用后，依第四节只读解析本机绑定、通过 `scripts/group_github.py --group development check` 核验身份，再按第二、
 五节定位准确交付 Issue 与执行 Issue，回读当前合同、GitHub 与本地状态，恢复已有候选、提交、验证及审查证据。
 涉及计算作业时，按规范第五节核对并交接执行环境与资源安排，遵守当前只读或执行授权边界。
 需要代码探索时，按规范第四节选用实际工作树对应的代码索引，交接工作目录、适用源码版本及本轮相关缺口。
@@ -14,7 +14,7 @@
 已明确指定 Project 时，用 `gh project view`、`field-list`、`item-list` 或 GraphQL 读取实际项目、条目、
 字段和选项；查询须覆盖目标条目，不能把分页未读完当成不存在。关联前查询已有条目，缺少时才用
 `gh project item-add` 关联当前 Issue；更新用 `item-edit` 的实际项目、条目、字段与选项标识。
-这些认证命令继续内联控制账号绑定目录；写入结果不明先回读，权限与同步缺口按规范第五节处理。
+这些认证命令全部经 `scripts/group_github.py --group development gh -- <参数>` 执行；写入结果不明先回读，权限与同步缺口按规范第五节处理。
 接口用法见 [GitHub CLI](https://cli.github.com/manual/gh_project_item-edit) 与
 [原生父子 Issue API](https://docs.github.com/en/rest/issues/sub-issues)。
 
@@ -25,17 +25,16 @@ Issue、本轮任务、适用合同、相关项目决策引用、必要 Project 
 该节要求的范围建议与决策缺口；主会话核对依据并按该节处理，更新当前合同后交付实施范围。
 涉及计算的规划与实施交接沿用规范第五节的资源事实和工程准则中的执行位置要求，不另建资源记录。
 研究来源任务同时按规范第六节[研究来源需求的接收与验证](../../../governance/codex-development-governance.md#研究来源需求的接收与验证)
-交接来源证据、用户签发依据和已批准工程范围，区分工程验证与研究评价；不把研究草稿直接当作实现合同。
+交接来源证据、用户原授权或有效委托、实际签发组、阶段预算和已批准工程范围，区分工程验证与研究评价；不把研究草稿直接当作实现合同。
 
 ## 3. 实施当前任务
 
 派生 `implementer`，交付执行 Issue 中分配给本轮的任务、已批准范围、非目标、验收、工作目录和已有现场。
-角色先核验身份，按规范第六节“实现”实施、自审和验证，再向主会话交付适用的完整待提交候选，或 PR、
-实现头、差异与验证结果；候选转交第四节。候选审查、失败与缺口按规范第六节处理，通过所需前置后才提交与推送。
+角色先核验开发身份，按规范第六节“实现”实施、自审和验证，向主会话交付适用的完整待提交候选；验证及内容审查通过后提交、普通推送，再返回准确仓库、基线、头仓库、分支、完整提交、PR 材料和验证证据；候选转交第四节。候选审查、失败与缺口按规范第六节处理，通过所需前置后才提交与推送。
 异常交接按该节“失败与审查反馈分流”保留已查资料、方案依据、已尝试方法及剩余未知事项；达到工程准则
-第五节停止条件时，主会话向用户汇报并等待决定，不重新派发同一问题的修复尝试。
+第五节停止条件时，主会话按有效决策委托或用户保留事项汇报并等待决定，不重新派发同一问题的修复尝试。
 按规范第四节和第六节“实现”交接索引情况、证据入口、产物及工作树归属、仍需保留对象；必要证据归档
-与产物清理执行下文第五节。PR 按规范第六节仅使用 `Refs`，主会话回读真实状态后组织下一次交接。
+与产物清理执行下文第五节。PR 按规范第六节仅使用 `Refs`。缺少 PR 时，由主会话把材料交实际签发组；签发组查询同头 PR，不存在时用自己的身份创建，再通过单一适配器回传链接。开发组取得链接后维护、独立正式 Review、批准及合并，不能自己创建 PR 或借用签发组账号。恢复前核对原写入者、活动作业、未提交现场、队列和剩余预算，失败历史不因交接清零。
 
 ## 4. 独立内容审查与正式 Review
 
@@ -92,11 +91,11 @@ Issue、本轮任务、适用合同、相关项目决策引用、必要 Project 
    `git status --short --branch`、必要差异及进行中的 Git 操作。路径、分支或远端无法确认、主路径检出
    其他分支、存在冲突或活动 Git 操作时保留现场并报告具体缺口，不自动切换分支或解除锁与占用。
 2. 核对 `remote.<准确远端>.fetch` 中该默认分支实际对应的远端跟踪引用；抓取时保留这项映射，避免主工作树
-   快进后对应远端跟踪引用仍旧。HTTPS 远端以控制账号绑定目录和仅本次生效的凭据 helper 执行：
-   `GH_CONFIG_DIR=<角色固定目录> git -c credential.helper= -c 'credential.helper=!gh auth git-credential' -C <主工作树> fetch --no-tags <准确远端> refs/heads/<默认分支>`。
-   这两个 `-c` 参数只为当前命令清空继承的 helper 并使用绑定账号的 `gh` 凭据，不修改全局或仓库 Git
-   配置；仅设置 `GH_CONFIG_DIR` 不能证明 Git 已使用该账号。其他传输方式须按其实际认证方式核对身份，
-   不能把 HTTPS helper 当作 SSH 身份切换。
+   快进后对应远端跟踪引用仍旧。HTTPS 远端通过开发固定身份脚本执行：
+   `python3 <治理源>/scripts/group_github.py --group development git --worktree <主工作树> --remote <准确远端> fetch -- --no-tags refs/heads/<默认分支>`。
+   脚本每次核验开发账号，排除继承令牌，并用仅本次生效的 `credential.helper=` 和
+   `credential.helper=!gh auth git-credential` 覆盖继承的凭据助手，清除本次请求中的旧认证请求头及口令询问程序覆盖；只读取配置名，不读取认证头正文，不修改全局或仓库 Git 配置。
+   其他传输方式不能由该脚本证明账号时，报告具体缺口，不借用其他身份。
    若现有 fetch 映射未覆盖该分支，在同一命令显式增加
    `--refmap=refs/heads/<默认分支>:<已核对远端跟踪引用>`；目标必须是该准确远端与分支对应的
    `refs/remotes/...` 引用，不固定写成 `origin/main`，也不使用空 `--refmap=` 跳过跟踪引用更新。
@@ -128,15 +127,15 @@ Issue、本轮任务、适用合同、相关项目决策引用、必要 Project 
    只有已记录为当前任务创建的专用对象才能进入清理；主工作树、用户预先存在的工作树、其他任务工作树
    或归属不明路径一律不删除。
 2. 从已合并 PR 的头仓库和头引用取得准确远端及准确远端任务分支，不得假定它与本地任务分支同名。回读
-   远端默认分支名称。所有下述 fetch、push 与 ls-remote 命令仍须内联角色固定 `GH_CONFIG_DIR`。
+   远端默认分支名称。所有下述 fetch、push 与 ls-remote 命令都经同一开发身份脚本执行，准确工作目录由私有交接提供。
 3. 使用不依赖 `remote.<name>.fetch` 隐含 refmap 的准确来源引用执行
-   `GH_CONFIG_DIR=<角色固定目录> git fetch --no-tags --refmap= <远端> refs/heads/<默认分支>`，随后立即以
+   `python3 <治理源>/scripts/group_github.py --group development git --worktree <准确工作目录> --remote <远端> fetch -- --no-tags --refmap= refs/heads/<默认分支>`，随后立即以
    `git rev-parse --verify FETCH_HEAD^{commit}` 取得并记录不可变的 `<新鲜默认分支尖端>`，作为本次核对
    使用的最新远端默认分支。不得把 `FETCH_HEAD` 冒充远端跟踪引用，也不得在记录完整提交 SHA 前执行
    下一次 fetch。
 4. 执行 `git rev-parse --verify refs/heads/<准确本地任务分支>^{commit}`，记录 `<本地任务分支尖端>`。
    随后执行
-   `GH_CONFIG_DIR=<角色固定目录> git fetch --no-tags --refmap= <远端> refs/heads/<准确远端任务分支>`，并
+   `python3 <治理源>/scripts/group_github.py --group development git --worktree <准确工作目录> --remote <远端> fetch -- --no-tags --refmap= refs/heads/<准确远端任务分支>`，并
    立即以 `git rev-parse --verify FETCH_HEAD^{commit}` 记录 `<首次远端任务分支尖端>`。任一引用不存在、
    不能解析为提交或 fetch 失败时停止。
 5. 按以下顺序执行三项祖先检查：
@@ -158,7 +157,7 @@ Issue、本轮任务、适用合同、相关项目决策引用、必要 Project 
    和其他可独立执行的产物清理；备份盘不可用时仍按上文暂停并等待用户裁决。关闭或结束所有仍使用该准确路径的角色、
    命令和会话，确认没有目录占用，同时确认没有活动 Git 操作、Git 锁或工作树锁。
 8. 进入删除序列前再次执行
-   `GH_CONFIG_DIR=<角色固定目录> git fetch --no-tags --refmap= <远端> refs/heads/<准确远端任务分支>`，并
+   `python3 <治理源>/scripts/group_github.py --group development git --worktree <准确工作目录> --remote <远端> fetch -- --no-tags --refmap= refs/heads/<准确远端任务分支>`，并
    立即以 `git rev-parse --verify FETCH_HEAD^{commit}` 记录 `<删除前远端任务分支尖端>`。
    若两个远端任务分支尖端不同，或第二次 fetch 失败，立即停止，不删除任何引用、工作树或本地分支。
 9. 在远端跟踪引用仍可解析时，先执行
@@ -177,13 +176,13 @@ Issue、本轮任务、适用合同、相关项目决策引用、必要 Project 
 11. 工作树移除成功后只执行 `git branch -d <准确本地任务分支>`。若普通删除拒绝，停止清理并请用户
    裁决，不得升级强制分支删除。
 12. 本地任务分支普通删除成功后，才允许执行唯一的条件删除命令：
-    `GH_CONFIG_DIR=<角色固定目录> git push --force-with-lease=refs/heads/<准确远端任务分支>:<删除前远端任务分支尖端> <远端> :refs/heads/<准确远端任务分支>`。
+    `python3 <治理源>/scripts/group_github.py --group development git --worktree <准确工作目录> --remote <远端> push -- --force-with-lease=refs/heads/<准确远端任务分支>:<删除前远端任务分支尖端> :refs/heads/<准确远端任务分支>`。
     完整租约预期值必须是步骤 8 第二次复核得到的完整提交 OID，租约与删除 refspec 都必须使用准确完整
     `refs/heads/...` 引用。该窄化例外仅允许删除当前已合并 PR 的准确远端任务引用，
     不得创建、更新、回退或改写任何引用，其他强制推送仍禁止；不得使用 `+` refspec、其他强制选项或其他引用。
     若租约拒绝或命令失败，立即停止并报告，不得刷新预期提交后重试。
 13. 远端条件删除成功后立即执行
-    `GH_CONFIG_DIR=<角色固定目录> git ls-remote --exit-code --refs <远端> refs/heads/<准确远端任务分支>`。
+    `python3 <治理源>/scripts/group_github.py --group development git --worktree <准确工作目录> --remote <远端> --option=--exit-code --option=--refs ls-remote -- refs/heads/<准确远端任务分支>`。
     只有输出为空且退出码准确为 2 才证明远端任务分支引用已消失；仍返回引用或发生其他退出状态时停止
     清理并报告，不能把网络或认证失败当成引用不存在。
 14. 删除后再次执行 `git worktree list --porcelain` 并检查准确路径与分支，确认工作树登记已消失、
@@ -205,4 +204,4 @@ Issue、本轮任务、适用合同、相关项目决策引用、必要 Project 
 结论与证据按该节处理并记录。完成条件满足后由主会话关闭工程 Issue，更新适用上层摘要及指定 Project。
 研究来源任务还按[工程交付返回研究](../../../governance/codex-development-governance.md#工程交付返回研究)
 返回准确版本、变更与验证事实及影响线索，由研究侧判断证据适用性和继续条件；不自动启动研究或关闭来源研究任务。
-主会话完成适用交接后报告并停止。
+主会话通过共同适配器向实际签发参与者固定回传准确版本、变更、验证、成本及收尾事实；决策来源回准确路线的决策组，研究来源回准确研究组。跨环境通过 GitHub 来源任务评论交接，可访问的 Agent Center 使用原轮次；发布回执不等于对方已接收或完成。原跨路线请求由接收路线沿原链回传，不改写本工程的签发来源。完成适用交接后报告并停止。

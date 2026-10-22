@@ -6,11 +6,11 @@ CLI 和支持独立 Profile 文件及自定义角色的 Codex CLI。
 
 ## 1. 准备公共源与账号
 
-克隆本仓库并进入根目录。为治理准备控制账号与实现账号各自的 GitHub CLI 认证目录；已有认证目录可以
+克隆本仓库并进入根目录。为开发组准备一个固定 GitHub CLI 认证目录；已有认证目录可以
 继续使用，新的认证由使用者通过 GitHub CLI 正常登录完成。不要把认证目录、令牌或配置备份复制到仓库。
 账号与字段的权威定义见[治理规范第四节](../governance/codex-development-governance.md#四角色与身份)。
 
-目标仓库需要赋予实现账号普通推送和创建 PR 的权限，控制账号需要管理 Issue、正式审查和合并的权限。
+目标仓库需要赋予开发账号管理 Issues／Projects、普通推送、维护 PR、正式 Review 和普通合并的权限。决策组与研究组各用自己的私有身份，实际签发组需要创建 PR 的权限；PR 创建者与开发账号分开，独立技术审查仍由不同执行者完成。其他仓库审查要求另按实际规则核对。
 新建仓库不会自动继承另一个仓库的协作者或设置；邀请需要接受后才能作为已生效权限使用。
 按当前治理清理合同，合并采用保留实现提交的合并提交方式，关闭合并后自动删除分支；其他仓库设置以
 目标项目已批准要求为准。Git 远端认证也应使用相应账号；仅设置 `GH_CONFIG_DIR` 不会改变 SSH 密钥，
@@ -28,7 +28,7 @@ mkdir -p "$(dirname "$governance_binding_file")"
 cp -i templates/local.example.toml "$governance_binding_file"
 ```
 
-用编辑器打开该文件，填写 `paths.source_root` 和两个账号的 `login`、`config_dir`。把第一条命令取得的
+用编辑器打开该文件，填写 `paths.source_root` 和 `github.development` 的 `login`、`config_dir`。把第一条命令取得的
 实际目录填入 `source_root`；路径值是普通 TOML 字符串，使用实际绝对路径，不依赖变量替换或命令求值。
 带空格的路径可以正常填写；在 shell 命令中使用时仍需正确引用。不要在此文件填写模型、权限或凭据。
 
@@ -57,20 +57,20 @@ cp -i codex/agents/reviewer.example.toml "$codex_config_dir/codex-governance/age
 
 ```toml
 [agents."scope-planner"]
-description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：只读澄清准确 Issue 的范围、验收与决策缺口。"
+description = "仅供工程流程显式启用或接受有效委托后的父级交接：只读澄清准确 Issue 的范围、验收与决策缺口。"
 config_file = "codex-governance/agents/scope-planner.toml"
 
 [agents.implementer]
-description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：实施准确 Issue 的已批准任务，提交、推送并维护 PR。"
+description = "仅供工程流程显式启用或接受有效委托后的父级交接：实施准确 Issue 的已批准任务，提交、推送并维护 PR。"
 config_file = "codex-governance/agents/implementer.toml"
 
 [agents.reviewer]
-description = "仅供用户显式启用 codex-stage-orchestrator 后的父级交接：只读审查待提交候选、准确 PR 或交付组合；仅对 PR 提交正式 Review。"
+description = "仅供工程流程显式启用或接受有效委托后的父级交接：只读审查待提交候选、准确 PR 或交付组合；仅对 PR 提交正式 Review。"
 config_file = "codex-governance/agents/reviewer.toml"
 ```
 
 当前 CLI 默认启用子代理；若已有配置显式设置 `agents.enabled = false`，使用治理时需在原表中改为
-`true`。角色注册只使角色可用，不启用 GitHub 治理；三个角色只接收显式启用后由 orchestrator 交付的任务。
+`true`。角色注册只使角色可用，不启用 GitHub 治理；三个角色只接收工程流程显式启用或接受有效委托后由 orchestrator 交付的准确任务。
 
 普通启动保留该入口已有的主会话模型、推理等级和命令权限。需要覆盖时，编辑原生 `config.toml`、可选
 Profile 或对应角色 TOML 的顶层 `model`、`model_reasoning_effort` 等字段。角色权限示例沿用
@@ -123,26 +123,36 @@ Project 不增加本机绑定字段，起点与视图建议见第七节。
 已有决策记录时，可填写 `项目决策记录：<本项目已有决策 Issue 或索引的完整链接>`，或沿用当前合同和
 项目文档中的引用；各目标项目分别提供自己的入口。定位、交接和适用性判断见治理规范第六节“范围规划”。
 
-若希望普通开发与研究中适用的工作都复用公共原则，在用户级实际生效的全局规则中合入以下说明，
+若希望普通开发、研究与决策中适用的工作都复用公共原则，在用户级实际生效的全局规则中合入以下说明，
 保留已有个人偏好和环境边界，不把个人全局文件复制到公共仓库。Codex 从实际 `CODEX_HOME` 选择首个
 非空文件：先 `AGENTS.override.md`，否则 `AGENTS.md`；未设置 `CODEX_HOME` 时使用 `~/.codex`。
 因此只更新 `AGENTS.md`，不能证明存在覆盖文件的入口已采用新规则。读取顺序见
 [官方 AGENTS.md 文档](https://learn.chatgpt.com/docs/agent-configuration/agents-md)。
 
 ```text
-通用工程原则和中文文档规则适用于普通开发、分析、实现、审查、重构及研究中适用的工作，
+通用工程原则和中文文档规则适用于普通开发、分析、实现、审查、重构、研究与决策中适用的工作，
 不依赖治理 Profile 或目标仓库接入。
 先通过工具只读定位非空 CODEX_GOVERNANCE_CONFIG 指定的本机绑定文件；未指定时读取
 ${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml。
 只使用 paths.source_root 定位并完整读取 governance/engineering-principles.md，作为通用规则的唯一正文。
-此配置定位和规则读取不启用开发或研究工作流，不触发身份核验、Issue 查询或治理角色派生。
-开发治理按目标仓库的显式启用条件及 codex-stage-orchestrator 执行；策略研究按
-codex-strategy-research 的自身入口、授权和研究规则执行。两套流程分别维护所属任务与验收，
-工程与研究交接不自动扩大授权。配置或规则缺失时报告缺口，不猜测来源。
+此配置定位和规则读取不启用任何治理工作流，不触发治理身份核验、Issue 查询或治理角色派生。
+决策仅由用户显式调用 codex-decision-assistant 启动；研究由用户显式调用 codex-strategy-research，
+或按共同规则接受已获用户授权的决策组有效委托后启动。开发须满足目标仓库接入条件，并由用户显式调用
+codex-stage-orchestrator 给出明确需求，或接受已获用户授权的决策／研究组有效委托后启动。
+委托须被目标项目接受，回读准确 Issue、原授权、范围、验收、数据用途（适用时）、预计成本、
+同一阶段预算与回传入口，并按对应 Skill 以结构化输入接单；单纯收到材料不是委托。
+仅提及、询问、安装或修改 Skill、安装角色、启动 Profile 或读取共享规则不启用流程；
+同一已授权任务内的继续执行沿用有效授权。
+启用后完整读取同源 governance/group-collaboration.md；各组从实际 Skill 读取自己的流程。
+决策基于用户确认的业务结果、成功标准和硬约束；回读后仍不清晰时要求用户补充，依赖答案的工作停在安全点。
+研究保持业务源码和 Git 只读，可直接签发授权内必要工程依赖；实际工程签发组仅对开发交回的已推送分支
+创建平台 PR，开发负责维护、独立审查、正式 Review、普通合并与收尾，工程与研究验收互不替代。
+身份、跨路线协作与固定回传按共同规则执行；交接不重置预算、失败历史和停止条件，
+一般委托不扩大范围、数据用途、预算或用户保留事项。配置或规则缺失时报告缺口，不猜测来源。
 ```
 
-研究 Skill、研究角色和研究私有绑定按 `codex-strategy-research` 自身安装说明维护，不复制进开发治理
-绑定或用开发角色替代。两组角色可在原生配置中共存；安装和全局规则共享本身不启用任一流程。
+研究与决策的 Skill、角色（如适用）及私有绑定按各自安装说明维护，不复制进开发治理绑定或用开发角色替代。
+不同组的角色可在原生配置中共存；安装和全局规则共享本身不启用任一流程。
 
 ## 5. 启动与核对
 
@@ -153,7 +163,7 @@ codex -C /绝对路径/目标仓库
 普通启动后显式调用 `$codex-stage-orchestrator` 并给出明确需求即可，不必传入 `--profile`。
 安装后用新会话核对公共规则、Skill 和角色配置来源；完整调用方式见
 [README](../README.md#start)。身份核验只读取登录名，不读取认证文件。继承的 `GH_CONFIG_DIR` 即使不同，
-治理命令仍必须使用本角色绑定的目录。
+治理命令仍必须通过 `scripts/group_github.py --group development` 读取开发绑定；每次排除继承令牌并核验登录名，不能只设置目录。
 
 只核对新会话输入而不运行开发闭环时，可以在目标仓库执行：
 
@@ -198,7 +208,7 @@ codex debug prompt-input '仅核对规则来源和角色配置，不启用治理
   更新公共规则引用。不要备份或复制认证文件，也不改动其他治理工具的目录、服务或认证材料。
 - 移动公共源时，同步更新私有 `source_root` 和 Skill 链接；新会话用于确认切换生效，已运行会话可能
   仍保留旧指令。三个角色仍只接收主会话已经确定的任务，不因配置更新自行寻找任务。
-- 升级至 `0.7.0` 时保留既有项目、模块、阶段 Issue 的当前合同、编号及证据，不自动关闭或迁移。
+- 升级至 `0.8.0` 时保留既有项目、模块、阶段 Issue 的当前合同、编号及证据，不自动关闭或迁移。
   旧阶段中的已批准任务可继续执行；其他仓库硬编码的旧规则在后续接入时定向处理。
 - 回退只撤销本次公共规则差异和本次私有指令修改，保留其他配置与并行改动；不要用整份旧副本覆盖
   期间出现的新设置。符号链接共用文件时修改实际文件，保留已有链接及模型、推理等级、权限和角色绑定。
@@ -336,3 +346,13 @@ MCP 初始化和后台 watcher 也可能触发索引写入，不能只检查显�
   不能只凭 `git status` 干净得出结论。工具自身的仓库外派生缓存遵守治理正文的允许范围。
 - 用新会话核对三个入口、已安装角色及适用 Profile 的实际规则来源，沿用第五节的方法；工具不可用时
   能继续源码查询，不为证明配置生效而执行 GitHub 合并或另设审批流程。
+
+## 8. 三组协作迁移
+
+共同职责见[三组协作](../governance/group-collaboration.md)。旧 `github.controller` 和 `github.implementer` 改为开发组统一的 `github.development`；研究与决策分别在自己的私有绑定填写 `github.research`、`github.decision`。保留旧配置中的公共源和证据归档字段，不复用旧控制账号作为研究身份，不自动改认证文件或切换全局账号。实际登录名只在仓库外填写。
+
+更新 Skill、编排程序、目标仓库接入声明、角色指令、基础注册描述和可选 Profile，保留本地模型、推理、权限和其他设置。受托启动须由目标仓库明确接受，交接准确 Issue、授权、范围、验收、预计成本、同一阶段预算归属及固定回传入口。单纯收到材料不启动工程。
+
+协作仅使用决策源 `scripts/agent_center.py`。通过私有 `CODEX_AGENT_CENTER_CONFIG` 或默认 `codex-agent-center/local.toml` 的 `paths.source_root` 定位适配器及其 `docs/cross-route-protocol.md`、安装说明和公开模板。按项目声明绑定逻辑参与者与 GitHub 来源入口；只有选择 Agent Center 通道时才填写其端点、线程、工作目录和 Skill 路径。不同环境可完全通过 GitHub 交接，由目标在自己的环境恢复现场并显式接受，不要求本机可访问远端 App Server。不要为开发组复制另一个适配器、创建任务账本或安装后台监督。
+
+开发组完成前置验证、推送后交 PR 材料，实际签发组创建 PR 并回传链接。开发组随后以固定开发身份维护、正式 Review、批准、普通合并和收尾，结果固定回实际签发组。真实权限、协作邀请、线程绑定与联调留到启用阶段；本地协议模拟不证明真实账号和项目权限已就绪。
