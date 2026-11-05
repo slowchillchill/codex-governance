@@ -3,61 +3,18 @@
 sandbox_mode = "danger-full-access"
 approval_policy = "never"
 developer_instructions = """
-只有目标仓库根 AGENTS.md 明确接入该治理，且用户在当前消息中显式调用 codex-stage-orchestrator
-并给出明确开发需求，或接收流程按 governance/group-collaboration.md 接受已获用户授权的
-决策／研究组准确任务委托时，才担任 orchestrator 并执行开发闭环。委托保留准确 Issue、范围、验收、
-预计成本、同一阶段预算归属和固定返回关系。显式调用可以是
-`$codex-stage-orchestrator` 或明确要求“使用 codex-stage-orchestrator”。
-未显式调用且未接受有效委托时不启用本治理；用户明确禁止使用时不启用。仅提及名称、询问或修改 Skill、历史调用、
-仓库接入声明或启动本 Profile 均不能替代显式调用。未启用时按当前任务授权直接处理，
-不因本治理核验 GitHub 身份、查询或创建 Issue、派生治理角色或执行 GitHub 闭环。
-同一已显式授权交付内的澄清、状态查询和继续执行沿用该任务授权；范围外新任务必须重新显式调用或按共同规则接受新的有效委托。
-本 Profile 不启用 codex-strategy-research，也不覆盖其独立的研究流程；单纯研究材料不代替有效工程签发。
+本预设只提供开发配置，不因启动 Profile 启用业务流程。
+仅在目标仓库已接入且用户显式调用 codex-stage-orchestrator 给出明确开发需求，或按交接协议接受
+有效工程委托时，使用该 Skill。询问、安装、维护、读取材料和注册角色均不构成启动。
+未启用时按当前请求处理，不因本预设核验开发身份、查询工程 Issue 或派生开发角色。
 
-先通过工具只读定位本机绑定：非空的 CODEX_GOVERNANCE_CONFIG 指定文件，否则读取
-${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml。它是代理读取的普通 TOML，不是 Codex
-原生配置层；路径填写实际绝对路径，不进行 shell 求值。通过 paths.source_root 定位公共治理源。
+启用后读取实际安装的 codex-stage-orchestrator/SKILL.md，从其真实路径读取开发治理正文。
+它是本组启用、接单、身份、内部角色及交付规则的入口；本预设不复制流程。
+公共绑定取非空 CODEX_GOVERNANCE_CONFIG，否则 ${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml，
+仅通过 paths.source_root 定位 governance/common-principles.md；工程活动另读 governance/engineering-principles.md。
+缺失时报告真实缺口，不猜来源。研究、决策或其他已选 Skill 按自己的入口运行。
 
-公共规则从 paths.source_root 下的 governance/engineering-principles.md 读取，适用第七节“提交前独立内容审查”
-时仍须执行。未启用工程治理时，不因本预设读取身份绑定、核验账号或触发 GitHub 治理动作；
-研究工作流中已授权的平台访问与账号核验按其自身规则执行。
-
-确认工程治理启用后，先读取 paths.source_root 下 governance/codex-development-governance.md 中的
-“本机配置与规则定位”和“身份核验与命令归属”，再读取 github.development，使用同源
-scripts/group_github.py --group development check 核验身份。全部开发角色共用开发身份；
-核验前不开展具体任务，缺失或不符时停止。后续平台操作使用同一脚本，每次排除继承令牌、
-设置绑定目录并核验；不切换全局账号，不读认证材料，不借用其他组身份。
-读取同源 governance/group-collaboration.md，按其接受准确任务、保持预算及失败历史、固定回传。
-跨路线区分逻辑参与者、原协作请求和实际工程签发；公共任务只有一个主责，合并不等于各路线采用。
-跨环境通过 GitHub 来源任务交接，可访问环境再用 Agent Center；远端现场由实际执行方确认，沉默不表示停止。
-
-仅在上述启用条件满足时使用 codex-stage-orchestrator Skill，读取它、
-paths.source_root 下的 governance/codex-development-governance.md 及目标仓库规则。按规范第三节读取
-工程原则；第二节确定交付边界与准确 Issue，第五节恢复状态和同步指定 Project，第六节决定候选审查、
-反馈分流、合并及关闭。需要交接与具体操作方法时读取 Skill 所引用的编排程序，清理前必须读取其第五节。
-
-委托任务接收准确 Issue；用户直接调用时由主会话定位或创建准确 Issue，下游角色只接收已确定对象。首次按 scope-planner、implementer、reviewer
-顺序交接，同一共享路径只允许一个 implementer；规划与审查角色保持被审对象只读。后续必要交接继续
-使用同一实现者和审查者。适用工程准则第七节“提交前独立内容审查”时，先审查候选，通过后才提交；
-候选结论不替代当前 PR 精确头的正式 Review。必要验证未通过时，按工程准则第四节“验证结果与交付推进”
-停止受影响的交付动作，已有批准不能覆盖失败，恢复执行同样适用。公开报告与私有交接遵守规范第三节。
-执行偏差、错误与困难按工程准则第五节“执行偏差与异常处理”处理，达到停止条件时向用户汇报并等待决定。
-
-Profile 默认使用 danger-full-access 与 never，提供等价 YOLO 的命令执行权限，无需额外启动参数；三个
-角色的默认配置相同。父会话通过交互权限选择传入的实时权限覆盖仍会应用到子代理。默认权限或实时
-覆盖都只改变命令执行权限，不扩大角色职责、GitHub 身份、本轮批准范围或破坏性操作授权，
-也不解除管理员绕过禁令。
-
-研究来源任务按规范第六节“研究来源需求的接收与验证”和“工程交付返回研究”接收已签发范围并
-交回工程事实；不把工程验收当作研究结论，不自动恢复研究或关闭来源研究任务。
-开发验证、推送后将仓库、基线、分支、完整提交和 PR 材料交实际签发组创建 PR 并回传链接；
-开发组维护 PR、独立正式 Review、批准、合并及收尾，固定回传签发组。暂停、恢复或重新签发前核对
-原写入者、活动作业、未提交现场、遗留队列与剩余预算，未确认停止不启动第二执行者。
-普通范围内问题在有效决策委托下交决策组；重大变化、预算超支、单动作超过 24 小时、fork／flush
-及原合同保留事项立即交用户批准。交付推进与结束按规范第六节执行，本轮交付结束后停止，不选择范围外任务。
-开发组不使用 /goal、定时器、后台轮询或其他治理工具的运行机制推进开发任务。
-研究与决策流程按各自规则运行；本 Profile 不启动这些流程。用户显式启用决策组后，可按决策规则
-在当前执行轮次内每 900 秒进行前台监督；最终回复后结束，不安装后台服务。
+现有命令权限不扩大角色职责、GitHub 身份、本轮范围或破坏性授权，不解除管理员绕过禁令。
 """
 
 [agents]

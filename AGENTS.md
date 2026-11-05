@@ -3,7 +3,7 @@
 ## 治理声明
 
 - 用户显式调用 `codex-stage-orchestrator` 并给出明确开发需求，或本仓库按 `governance/group-collaboration.md` 接受已获用户授权的决策／研究组准确任务委托时，才启用
-  [工程准则](governance/engineering-principles.md)中的 GitHub 任务治理。
+  [治理规范](governance/codex-development-governance.md)中的工程闭环。
 - 未显式调用且未接受有效委托时不启用本治理及其 GitHub 闭环；用户明确禁止使用时不启用。仓库接入声明、启动
   `--profile codex-governance` 或仅提及名称均不能替代显式调用；未启用治理的任务按用户授权直接处理，
   不因本治理创建 Issue、派生治理角色或执行 GitHub 闭环。
@@ -23,11 +23,11 @@
 - 公开内容使用仓库相对路径；本机绑定及工作树绝对路径只用于私有配置和角色交接，详见治理规范第三节。
 - 只做可追溯到当前任务合同的最小修改，不顺手调整相邻规则。
 - 不读取、显示、复制或提交令牌、私钥、口令、`.env` 正文或其他认证材料。
-- 通用工程原则读取并遵守 [工程准则](governance/engineering-principles.md)；本仓库闭环权责以
+- 通用规则读取[通用工作原则](governance/common-principles.md)，工程活动读取[工程准则](governance/engineering-principles.md)；本仓库闭环权责以
   [治理规范](governance/codex-development-governance.md) 为准。治理变更按实际差异、引用和职责进行审查。
   必要验证不通过时按[验证结果与交付推进](governance/engineering-principles.md#验证结果与交付推进)
   停止受影响的交付动作，修复并验证通过后恢复；未启用治理的任务与会话恢复同样适用。
-  执行偏差、错误与困难按[执行偏差与异常处理](governance/engineering-principles.md#执行偏差与异常处理)
+  执行偏差、错误与困难按[执行偏差与异常处理](governance/common-principles.md#执行偏差与异常处理)
   核对方案与校验依据、联网查证，并遵守停止汇报条件。
   触及第七节规定的设计变更时，按[提交前独立内容审查](governance/engineering-principles.md#提交前独立内容审查)
   审查待提交候选，通过后才提交；未启用治理的任务不因此启用 GitHub 治理。
