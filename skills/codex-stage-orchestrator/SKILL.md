@@ -15,7 +15,9 @@ description: 接收明确工程需求，编排规划、实现、验证、独立�
 
 解析本 `SKILL.md` 的真实文件路径，以所在目录解析下列相对链接。先读本源[治理规范](../../governance/codex-development-governance.md)的“启用条件与当前请求边界”，确认接单后读“本机配置与规则定位”和“身份核验与命令归属”。规则缺失时报告缺口，不猜另一副本。
 
-本机公共绑定取非空 `CODEX_GOVERNANCE_CONFIG`，否则 `${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml`。以 `paths.source_root` 定位通用原则、交接协议和 `scripts/group_github.py`；平台及远端 Git 命令使用 `--group development` 和本组绑定，先核验实际身份，缺失或不符时停止相关操作，不借用其他身份。
+本 Skill 启用后明确采用本任务的开发流程、`governance/common-principles.md` 和 `governance/engineering-principles.md`；不要求个人全局入口预先加载任何治理规则。本机绑定取非空 `CODEX_GOVERNANCE_CONFIG`，否则 `${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml`，仅以 `paths.source_root` 定位公共依赖和 `scripts/group_github.py`。向子角色交接已选 Skill、准确规则源与适用任务；仍适用且已加载的正文直接复用，不把规则延伸到无关任务。
+
+参与三组委托时按下节读取 `governance/group-collaboration.md`。启用后的身份读取及前置核验按治理规范第四节执行，核验前不开展具体任务；平台及远端 Git 命令继续使用 `--group development` 并核验实际身份，缺失或不符时停止相关操作，不借用其他身份。规则或依赖缺失时报告准确缺口，不回退到个人全局入口猜测来源，也不自动选择另一治理体系。
 
 开发内部流程只按治理规范执行：第二节确定准确任务与交付范围，第三节读取工程原则，第四节规定本组角色，第五节恢复状态，第六节规定规划、实现、审查与交付，第七节规定授权。需要具体操作时读取[编排程序](references/stage-procedure.md)，清理前读取其第五节；入口不复制内部步骤。
 

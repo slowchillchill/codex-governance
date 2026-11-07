@@ -10,9 +10,8 @@ developer_instructions = """
 
 启用后读取实际安装的 codex-stage-orchestrator/SKILL.md，从其真实路径读取开发治理正文。
 它是本组启用、接单、身份、内部角色及交付规则的入口；本预设不复制流程。
-公共绑定取非空 CODEX_GOVERNANCE_CONFIG，否则 ${XDG_CONFIG_HOME:-$HOME/.config}/codex-governance/local.toml，
-仅通过 paths.source_root 定位 governance/common-principles.md；工程活动另读 governance/engineering-principles.md。
-缺失时报告真实缺口，不猜来源。研究、决策或其他已选 Skill 按自己的入口运行。
+本预设不独立定位或加载公共原则、工程原则或交接协议；规则和依赖由当前已选 Skill 自行声明和定位。
+研究、决策或其他已选 Skill 按自己的入口运行。项目明确采用的维护合同继续在其范围内适用。
 
 现有命令权限不扩大角色职责、GitHub 身份、本轮范围或破坏性授权，不解除管理员绕过禁令。
 """

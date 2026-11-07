@@ -23,7 +23,7 @@
 - 公开内容使用仓库相对路径；本机绑定及工作树绝对路径只用于私有配置和角色交接，详见治理规范第三节。
 - 只做可追溯到当前任务合同的最小修改，不顺手调整相邻规则。
 - 不读取、显示、复制或提交令牌、私钥、口令、`.env` 正文或其他认证材料。
-- 通用规则读取[通用工作原则](governance/common-principles.md)，工程活动读取[工程准则](governance/engineering-principles.md)；本仓库闭环权责以
+- 本仓库的维护合同明确采用[通用工作原则](governance/common-principles.md)，工程活动采用[工程准则](governance/engineering-principles.md)，均按本仓库相对路径定位，不依赖个人全局规则；这一采用仅约束本仓库维护，不向其他项目或 Skill 扩展。本仓库闭环权责以
   [治理规范](governance/codex-development-governance.md) 为准。治理变更按实际差异、引用和职责进行审查。
   必要验证不通过时按[验证结果与交付推进](governance/engineering-principles.md#验证结果与交付推进)
   停止受影响的交付动作，修复并验证通过后恢复；未启用治理的任务与会话恢复同样适用。
