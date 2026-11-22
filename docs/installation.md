@@ -77,18 +77,20 @@ Profile 或对应角色 TOML 的顶层 `model`、`model_reasoning_effort` 等字
 `danger-full-access` 和 `never`，父会话实时权限覆盖仍会应用到子代理；这些设置不扩大任务授权或角色职责。
 账号与目录仍只维护在私有绑定中，不另加角色的 `GH_CONFIG_DIR` 默认副本。
 
-兼顾治理判断质量与执行成本时，可以在安装后的三个角色 TOML 中采用以下可选组合。表中列名对应
-原生配置字段；公共模板仍默认继承安装者已有配置。
+工程组建议按下表配置模型。主协调者的建议值写入可选的工程 Profile，子代理的建议值写入安装后的对应角色 TOML。
+普通启动沿用该入口的主会话配置，公共模板默认继承安装者已有配置。
 
 | 角色 | `model` | `model_reasoning_effort` |
 |---|---|---|
-| 范围规划者 `scope-planner` | `gpt-6-astra` | `high` |
-| 实现者 `implementer` | `gpt-6.1-sol` | `medium` |
-| 审查者 `reviewer` | `gpt-6-astra` | `xhigh` |
+| 主协调者 `orchestrator`（专用 Profile） | `gpt-6.2-astra` | `high` |
+| 范围规划者 `scope-planner` | `gpt-6.2-astra` | `high` |
+| 实现者 `implementer` | `gpt-6.2-sol` | `high` |
+| 审查者 `reviewer` | `gpt-6.2-astra` | `high` |
 
-这是按角色职责作出的选型建议，实际效果仍需结合项目任务评估。型号能力与可用推理等级参见
-[GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) 和
-[GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol) 的官方说明。
+主协调者、范围规划者和审查者使用 Astra 判断任务边界、验收条件和实现风险。实现者使用 Sol 完成已规划的编码和验证工作。
+这些推理等级是工程组按职责给出的建议。模型特性参见 OpenAI 的
+[GPT-6.2 Astra](https://developers.openai.com/api/docs/models/gpt-6.2-astra) 和
+[GPT-6.2 Sol](https://developers.openai.com/api/docs/models/gpt-6.2-sol) 模型卡。
 
 需要单独的治理启动预设时，可额外安装 Profile：
 
